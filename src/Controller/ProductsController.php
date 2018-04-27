@@ -7,6 +7,7 @@ use Cake\Event\Event;
 use Cake\Routing\Router;
 use Cake\Mailer\Email;
 use Cake\Auth\DefaultPasswordHasher;
+use Cake\Datasource\ConnectionManager;
 //use \CROSCON\CommissionJunction\Client;      
 
 
@@ -35,7 +36,7 @@ class ProductsController extends AppController
 
 
 
-        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','clear' ,'search','view',
+        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','searchajax','clear' ,'search','view',
             'index','addtocart','productbycat','promoteproduct','addsellproduct','currencyconverter','savereview']);            
 
         $this->authcontent();        
@@ -182,6 +183,42 @@ class ProductsController extends AppController
 
     }
     
+    public function searchajax() {
+
+      $conn = ConnectionManager::get('default');
+
+       $category_id = $this->request->data['category_type'];
+       $lat = $this->request->data['latitude'];
+       $long = $this->request->data['longitude'];
+
+       if($this->request->data['category_type']){
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND lat != '' HAVING distance < 5";
+    }else{
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND  lat != '' HAVING distance < 5";
+    }
+
+    $data = $conn->execute($query);
+    $products = $data->fetchAll('assoc');
+
+
+    
+         
+      if(!empty($products)){           
+             $response['status'] = 'true';
+             $response['msg'] = '';   
+             $response['data'] = $products;  
+        }else{
+           $response['status'] = 'false';
+           $response['msg'] = 'Data not found.';  
+        }
+        echo json_encode($response);
+         exit;
+
+       
+
+    }
+
+
     
     public function search() { 
 
@@ -191,99 +228,16 @@ class ProductsController extends AppController
         $this->loadModel('Categories'); 
         $products = $this->Products->find('all',['contain'=>['Categories','Reviews'], 'conditions' => ['Products.status' => 1], 'order' => ['Products.id DESC'] ]);
 
-      $categories = $this->Categories->find('all')->all();      
+      $categories = $this->Categories->find('all')->all(); 
 
-    //   $lat = $this->request->getQuery('latitude');
-    //   $long = $this->request->getQuery('longitude');
     
-    // if($this->request->getQuery('search_name')){
-    //   $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`latitude`,`longitude`) as distance FROM users WHERE name LIKE '%".$this->request->getQuery('search_name')."%' AND role = 'trainer' AND latitude != '' HAVING distance < 5 ORDER BY distance";
-    // }else{
-    //   $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`latitude`,`longitude`) as distance FROM users WHERE role = 'trainer' AND latitude != '' HAVING distance < 5 ORDER BY distance";
-    // }
-       
         $products = $products->all(); 
         $products = $products->toArray(); 
         $this->set(compact('products','categories')); 
         $this->set('_serialize', ['products','categories']);
         
         $markers = json_encode( $products );
-        //echo $markers;
-
-
-
-      // end search 
-              
-        // $search = null;
-        // if(!empty($this->request->query['search']) || !empty($this->request->data['name']) || !empty($this->request->query['catid'])) {
-        //     $search = empty($this->request->query['search']) ? isset($this->request->data['name']) : $this->request->query['search'];
-        //     $search = preg_replace('/[^a-zA-Z0-9 ]/', '', $search);
-        //     if(isset($search)){
-        //     $terms = explode(' ', trim($search));
-        //     $terms = array_diff($terms, array('')); 
-        //     }  
-        //     $conditions = array(
-        //         'Products.status' => 1
-        //     );
-              
-           
-        //     if(!empty($this->request->query['catid'])){
-        //        $conditions = array(
-        //         'Products.cat_id' => $this->request->query['catid']
-        //     );
-        //     }  
-            
-        //    if(!empty($terms)){ 
-        //     foreach($terms as $term) {
-        //         $terms1[] = preg_replace('/[^a-zA-Z0-9]/', '', $term);
-        //         $conditions[] = array('Products.name LIKE' => '%' . $term . '%');
-        //     }
-        //    }   
-            
-           
-            
- 
-        //     $products = $this->Products->find('all', array(  
-        //         'contain' => array(
-        //             'Users',
-        //             'Reviews'
-        //         ),
-        //         'conditions' => $conditions,
-        //         'limit' => 200,
-        //     ));
- 
-            
-        //      $products = $products->all(); 
-        //      $products = $products->toArray(); 
-   
-        //     if(count($products) == 1) {
-             
-        //         return $this->redirect(array('controller' => 'products', 'action' => 'view/'.$products[0]['slug'])); 
-        //     }
-            
-        //  if(!empty($terms1)){
-        //     $terms1 = array_diff($terms1, array(''));
-        //  }
-         
-       
-        //     $this->set(compact('products', 'terms1'));
-        // }
-        // $this->set(compact('search'));  
-
-        // if ($this->request->is('ajax')) {
-        //     $this->layout = false;
-        //     $this->set('ajax', 1);
-        // } else {
-        //     $this->set('ajax', 0);
-        // }
-
-        // $this->set('title_for_layout', 'Search');
-
-        // $description = 'Search';
-        // $this->set(compact('description'));
-
-        // $keywords = 'search';
-        // $this->set(compact('keywords'));
+        
     }
     
     
@@ -333,10 +287,10 @@ class ProductsController extends AppController
                  
 
                 $image = $this->request->data['image'];
-	        $name = time().$image['name'];
-		$tmp_name = $image['tmp_name'];
-		$upload_path = WWW_ROOT.'images/products/'.$name;
-		move_uploaded_file($tmp_name, $upload_path);
+          $name = time().$image['name'];
+    $tmp_name = $image['tmp_name'];
+    $upload_path = WWW_ROOT.'images/products/'.$name;
+    move_uploaded_file($tmp_name, $upload_path);
                 $this->request->data['image'] = $name;
                }else {
                     unset($this->request->data['image']);
@@ -485,12 +439,12 @@ class ProductsController extends AppController
                 )); 
             $cartfind = $cartfind->first();   
 
-         	if($cartfind['seller_id'] != $post_seller_id && !empty($cartfind)){        
+          if($cartfind['seller_id'] != $post_seller_id && !empty($cartfind)){        
                
                     
                     
                     
-			echo "<script>if (window.confirm('Are you sure you want to change the seller? While adding item in the cart with the new seller, your previous cart items will be removed.?'))
+      echo "<script>if (window.confirm('Are you sure you want to change the seller? While adding item in the cart with the new seller, your previous cart items will be removed.?'))
 {
    window.location.href='clear';   
 }
@@ -498,8 +452,8 @@ else
 {
   window.location.href='/crystal';  
 }</script>";
-			
-		}else{ 
+      
+    }else{ 
                           
                              
                 
@@ -540,10 +494,10 @@ else
                  
 
                 $image = $this->request->data['image'];
-	        $name = time().$image['name'];
-		$tmp_name = $image['tmp_name'];
-		$upload_path = WWW_ROOT.'images/products/'.$name;
-		move_uploaded_file($tmp_name, $upload_path);
+          $name = time().$image['name'];
+    $tmp_name = $image['tmp_name'];
+    $upload_path = WWW_ROOT.'images/products/'.$name;
+    move_uploaded_file($tmp_name, $upload_path);
                 $this->request->data['image'] = $name;
                }else {
                     unset($this->request->data['image']);
@@ -552,10 +506,10 @@ else
             
 //                $image = $this->request->data['images'][0];
 //                if(!empty($image['name'])){
-//	        $name = time().$image['name'];
-//		$tmp_name = $image['tmp_name'];
-//		$upload_path = WWW_ROOT.'images/products/'.$name;
-//		move_uploaded_file($tmp_name, $upload_path);
+//          $name = time().$image['name'];
+//    $tmp_name = $image['tmp_name'];
+//    $upload_path = WWW_ROOT.'images/products/'.$name;
+//    move_uploaded_file($tmp_name, $upload_path);
 //            $this->request->data['image'] = $name;
 //                }else{  
 //                    $this->request->data['image'] = '';

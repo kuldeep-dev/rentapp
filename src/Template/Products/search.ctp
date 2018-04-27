@@ -28,7 +28,7 @@ $times = create_time_range('0:00', '24:00');
         <div class="row">
           <div class="col-md-12">
             <div class="sr-form">
-              <form class="form-inline" name="search-form" method="post" action="#">
+              <form class="form-inline" name="search-form" id="search-form" method="post">
                 <div class="form-group">
                   <label>Select Yacht</label>
                   <select class="form-control" name="category_type">
@@ -73,7 +73,7 @@ $times = create_time_range('0:00', '24:00');
                         <?php } ?>
                   </select>
                 </div>
-                <input type="submit" class="btn btn-default sr-btn" value="">
+                <input type="button" id="srch-button" class="btn btn-default sr-btn" value="">
               </form>
             </div><!-- Form Section End Here -->
           </div>
@@ -233,7 +233,6 @@ $times = create_time_range('0:00', '24:00');
   <script>
   $(function() {
     var fromDate = $("#srchdate_start").datepicker({
-        defaultDate: "+1w",
         changeMonth: true,
         minDate: 0,
         minDate: new Date(),
@@ -245,7 +244,6 @@ $times = create_time_range('0:00', '24:00');
     });
 
     var toDate = $("#srchdate_end").datepicker({
-        defaultDate: "+1w",
         changeMonth: true
     });
 });
@@ -280,13 +278,15 @@ google.maps.event.addDomListener(window, 'load', function () {
 
     /*** Google Map ***/
     
+var host =  window.location.origin;
+//console.log(host);    
 var allocation = $.parseJSON('<?php echo json_encode($products) ?>');  
-console.log("location",allocation);
+//console.log("location",allocation);
 var alllocations = [];
 var i;  
 for(i=0; i<Object.keys(allocation).length; i++){
     if(allocation[i]['lat'] != ''){
-        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long']] );
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
     }    
 }
   var map = new google.maps.Map(document.getElementById('mapview'), {
@@ -304,12 +304,77 @@ for(i=0; i<Object.keys(allocation).length; i++){
     });
     google.maps.event.addListener(marker, 'click', (function(marker, i) {
       return function() {
-        infowindow.setContent(alllocations[i][0]);
+        //infowindow.setContent(alllocations[i][0]);
+        infowindow.setContent('<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ alllocations[i][3] +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ alllocations[i][4] +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ alllocations[i][3] +' ">'+ alllocations[i][0] +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ alllocations[i][6] +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ alllocations[i][5] +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>');
         infowindow.open(map, marker);
       }
     })(marker, i));
   }
   
 /*** Google Map (END) ***/  
+
+
+/// search ajax
+
+jQuery("#srch-button").click(function(event) {
+          $.ajax({
+            url: '<?php echo $this->request->webroot; ?>products/searchajax', 
+            data: $('#search-form').serialize(),
+            method: 'post',
+            dataType: 'json',
+            success: function (res) {    
+                       if (res.status == 'true') 
+                       {
+                        var html = "";
+                        console.log(res.data);
+                        for(var i=0; i < res.data.length; i++ )
+                        {
+
+                        
+                        html += '<div class="list_wrap">'
+                        html += '<a href="'+ host +'/rentapp/products/booking/'+ res.data[i].id +'">' 
+                        html += '<div class="img_sec">'
+                        html += '<img src="'+ host +'/rentapp/images/products/'+ res.data[i].image +' " alt="Slide Image">'
+                        html += '</div>'
+                        html += '<div class="caption">'
+                        html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ res.data[i].id +'"></a>'+ res.data[i].name +'</h5>'
+                        html += '<div class="tr_rating">'
+                        html += '<span>'+ res.data[i].trips +' Booking</span>'
+                        html += '<div class="rating">'
+                        html += '</div>'
+                        html += '</div>'
+                        html += '<div class="price">'
+                        html += '<h5>$'+ res.data[i].price +'</h5>'
+                        html += '<span>Per Hour</span>'
+                        html += '</div>'
+                        html += '</div>'
+                        html += '</a>  '
+                        html += '</div>'
+                      }
+                      $('.sr-inner_wrap').html(html);
+                             
+                       }
+                      
+                   }
+        });           
+});
+
+
     
 </script>
