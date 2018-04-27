@@ -93,14 +93,14 @@ $times = create_time_range('0:00', '24:00');
               </div>
               <div class="content_left">
                 <div class="result">
-                  <label><?php echo count($products); ?> Result</label>
+                  <label class="totalresult"><?php echo count($products); ?> Result</label>
                   <button type="button" class="btn btn-default">Reset Filter</button>
                 </div>
                 <div class="left_form">
                   <form class="form-horizontal" name="Filter_Form" method="post" action="#">
                     <div class="form-group">                    
                       <label>Sort By</label>
-                      <select class="form-control">
+                      <select class="form-control" id="pricehighlow">
                         <option value="" disabled="disabled">Select</option>
                         <option value="price_low">Price: low to high</option>
                         <option value="price_high">Price: high to low</option>
@@ -148,9 +148,9 @@ $times = create_time_range('0:00', '24:00');
                     </div> -->
                     <div class="form-group">
                       <label>Vehicle Type</label>
-                      <select class="form-control">
-                        <option value="" disabled="disabled">Select</option>
-                        <option value="old">Old</option>
+                      <select class="form-control" id="vehicletype">
+                        <option value="" disabled="disabled" selected="selected">Select</option>
+                        <option value="Old">Old</option>
                         <option value="New">New</option>
                       </select>
                     </div>
@@ -168,8 +168,11 @@ $times = create_time_range('0:00', '24:00');
                     </div> -->
                     <div class="form-group">
                       <label>Vehicle Color</label>
-                      <select class="form-control">
-                        <option value="" disabled="disabled">Select</option>
+                      <select class="form-control" id="coloroption">
+                        <option value="" disabled="disabled" selected="selected">Select</option>
+                        <?php foreach($color as $coloroption) {?>
+                          <option value="<?php echo $coloroption['color'] ?>"><?php echo $coloroption['color']?></option>
+                        <?php } ?>
                       </select>
                     </div>
                     <!-- <div class="form-group">
@@ -217,7 +220,7 @@ $times = create_time_range('0:00', '24:00');
                 </div>
                 </a>  
               </div><!-- End Here -->
-                <?php } } ?>
+                <?php } } else { echo  " No data found";} ?>
             </div>
             <!-- Map Section Start Here -->
               <div class="sr-map_sec" id="mapview" style="min-height: 550px;">
@@ -244,6 +247,8 @@ $times = create_time_range('0:00', '24:00');
     });
 
     var toDate = $("#srchdate_end").datepicker({
+        minDate: 0,
+        minDate: new Date(),
         changeMonth: true
     });
 });
@@ -331,6 +336,11 @@ for(i=0; i<Object.keys(allocation).length; i++){
 
 
 /// search ajax
+var valueSelected = "";
+var alldata= "";
+var totalresult ="";
+
+var alldata = $.parseJSON('<?php echo json_encode($products) ?>');
 
 jQuery("#srch-button").click(function(event) {
           $.ajax({
@@ -342,10 +352,10 @@ jQuery("#srch-button").click(function(event) {
                        if (res.status == 'true') 
                        {
                         var html = "";
-                        console.log(res.data);
+                        totalresult = res.data.length;
+                        alldata = res.data;
                         for(var i=0; i < res.data.length; i++ )
                         {
-
                         
                         html += '<div class="list_wrap">'
                         html += '<a href="'+ host +'/rentapp/products/booking/'+ res.data[i].id +'">' 
@@ -368,7 +378,8 @@ jQuery("#srch-button").click(function(event) {
                         html += '</div>'
                       }
                       $('.sr-inner_wrap').html(html);
-                             
+                      $('.totalresult').html(totalresult +" "+"Result");
+                            
                        }
                       
                    }
@@ -376,5 +387,225 @@ jQuery("#srch-button").click(function(event) {
 });
 
 
+
+$('#pricehighlow').on('change', function (e) {
+    var optionSelected = $("option:selected", this);
+    valueSelected = this.value;
+    if (valueSelected == "price_low" )
+    {
+       alldata.sort(function(a, b) {
+          return parseFloat(a.price) - parseFloat(b.price);
+        });
+       var html = "";
+       totalresult = alldata.length;
+       for(var i=0; i < alldata.length; i++ )
+              {
+              
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldata[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldata[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldata[i].id +'"></a>'+ alldata[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldata[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldata[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
+
+    }
+    else if (valueSelected == "price_high")
+    {
+      alldata.sort(function(a, b) {
+          return parseFloat(b.price) - parseFloat(a.price);
+        });
+       var html = "";
+       totalresult = alldata.length;
+       for(var i=0; i < alldata.length; i++ )
+              {
+              
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldata[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldata[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldata[i].id +'"></a>'+ alldata[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldata[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldata[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
+    }
+
+});
+
+
+$('#vehicletype').on('change', function (e) {
+    var optionSelected1 = $("option:selected", this);
+    valueSelected1 = this.value;
+    console.log(valueSelected1);
+    if (valueSelected1 == "Old" )
+    {
+     alldataold= alldata.filter(function(hero) {
+        return hero.conditions == "Old";
+      });
+      console.log(alldataold);
+       var html = "";
+       totalresult = alldataold.length;
+       for(var i=0; i < alldataold.length; i++ )
+              {
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldataold[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldataold[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldataold[i].id +'"></a>'+ alldataold[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldataold[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldataold[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
+          
+
+    }
+    else if (valueSelected1 == "New")
+    {
+     alldatanew = alldata.filter(function(hero) {
+        return hero.conditions == "New";
+      });
+      console.log(alldatanew);
+       var html = "";
+       totalresult = alldatanew.length;
+       for(var i=0; i < alldatanew.length; i++ )
+              {
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldatanew[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldatanew[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldatanew[i].id +'"></a>'+ alldatanew[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldatanew[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldatanew[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
+    }
+
+});
+
+
+$('#coloroption').on('change', function (e) {
+    var optionSelected1 = $("option:selected", this);
+    valueSelected1 = this.value;
+    if (valueSelected1 != "" )
+    {
+     alldatacolor= alldata.filter(function(hero) {
+        return hero.color == valueSelected1;
+      });
+       var html = "";
+       totalresult = alldatacolor.length;
+       for(var i=0; i < alldatacolor.length; i++ )
+              {
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldatacolor[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldatacolor[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldatacolor[i].id +'"></a>'+ alldatacolor[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldatacolor[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldatacolor[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
+          
+}
     
+
+});
+
+
+////// range slider
+// var min = 0;
+// var max = 800;
+var min = parseInt('<?php echo round($productsprice[0]["minprice"]);?>');
+var max = parseInt('<?php echo round($productsprice[0]["maxprice"]);?>');
+var minvalue =[];
+$( "#price-range" ).slider({
+    range: true,
+    min: min,
+    max: max,
+    values: [ min, max ],
+    slide: function( event, ui ) {
+    $("#amount1").val( "$" + ui.values[ 0 ]);
+    $("#amount2").val( "$" + ui.values[ 1 ]);
+    minvalue.push($( "#amount1" ).val());
+
+    $.session.clear();
+    }
+  });
+  $( "#amount1" ).val( "$" + $( "#price-range" ).slider( "values", 0 ) );
+  $( "#amount2" ).val( "$" + $( "#price-range" ).slider( "values", 1 ) );
+    
+    setTimeout(function(){ 
+      alert("hello");
+      var lastEl = minvalue[minvalue.length-1];
+      console.log(lastEl);
+    //console.log($( "#amount2" ).val());
+     }, 2000);
+
 </script>

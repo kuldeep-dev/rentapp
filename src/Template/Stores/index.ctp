@@ -1,3 +1,25 @@
+<?php
+function create_time_range($start, $end, $interval = '60 mins', $format = '12') {
+    $startTime = strtotime($start); 
+    $endTime   = strtotime($end);
+    $returnTimeFormat = ($format == '12')?'g:i:s A':'G:i:s';
+
+    $current   = time(); 
+    $addTime   = strtotime('+'.$interval, $current); 
+    $diff      = $addTime - $current;
+
+    $times = array(); 
+    while ($startTime < $endTime) { 
+        $times[] = date($returnTimeFormat, $startTime); 
+        $startTime += $diff; 
+    } 
+    $times[] = date($returnTimeFormat, $startTime); 
+    return $times; 
+}
+
+//$times = create_time_range('0:00', '24:00', '30 mins');
+$times = create_time_range('0:00', '24:00');
+?>
 <section class="st_content">
 		<section class="st_banner">
 			<img src="<?php echo $this->request->webroot; ?>images/home-banner.jpg" alt="Banner">
@@ -6,76 +28,38 @@
 				<h2>Watercraft Rentals</h2>
 				<p><strong>Jet Ski to Yacht</strong> Rent it your wave</p>
 				<div class="sr-form">
-					<form class="form-inline" name="search-form" method="post" action="#">
+					<form class="form-inline" name="search-form" method="get" action="<?php echo $this->request->webroot; ?>products/search">
 						<div class="form-group">
 							<label>Where</label>
-							<input type="text" class="form-control" name="fn" placeholder="Enter Your Address">
+							<input class="form-control tlt_form_field" name="search" id="txtPlaces" type="text" placeholder="Enter your location">
+		                  <input type="hidden" id="latitude" name="latitude" class="form-control" />
+		                  <input type="hidden" id="longitude" name="longitude" class="form-control" />
 						</div>
 						<div class="form-group">
 							<label>From</label>
-							<input type="text" class="form-control" id="date-start" name="fn" placeholder="02/23/2018">
+							<input type="text" class="form-control" id="srchdate_start" placeholder="Select Date" name="srchdate_start" value="">
 						</div>
 						<div class="form-group">
 							<label>&nbsp;</label>
-							<select class="form-control">
-								<option value="01:00">01:00 AM</option>
-								<option value="02:00">02:00 AM</option>
-								<option value="03:00">03:00 AM</option>
-								<option value="04:00">04:00 AM</option>
-								<option value="05:00">05:00 AM</option>
-								<option value="06:00">06:00 AM</option>
-								<option value="07:00">07:00 AM</option>
-								<option value="08:00">08:00 AM</option>
-								<option value="09:00">09:00 AM</option>
-								<option value="10:00">10:00 AM</option>
-								<option value="11:00">11:00 AM</option>
-								<option value="12:00">12:00 AM</option>
-								<option value="13:00">01:00 PM</option>
-								<option value="14:00">02:00 PM</option>
-								<option value="15:00">03:00 PM</option>
-								<option value="16:00">04:00 PM</option>
-								<option value="17:00">05:00 PM</option>
-								<option value="18:00">06:00 PM</option>
-								<option value="19:00">07:00 PM</option>
-								<option value="20:00">08:00 PM</option>
-								<option value="21:00">09:00 PM</option>
-								<option value="22:00">10:00 PM</option>
-								<option value="23:00">11:00 PM</option>
-								<option value="24:00">12:00 PM</option>
-							</select>
+							<select name="srchtimestart" id="srchtimestart" class="form-control">
+                    <option value="">Select Time</option>
+                        <?php foreach($times as $key=>$val){ ?>
+                        <option value="<?php echo $val; ?>"><?php echo $val; ?></option> 
+                        <?php } ?>
+                  </select>
 						</div>
 						<div class="form-group">
 							<label>TO</label>
-							<input type="text" class="form-control" id="date-end" name="fn" placeholder="02/23/2018">
+							<input type="text" class="form-control" id="srchdate_end" placeholder="Select Date" name="srchdate_end" value="">
 						</div>
 						<div class="form-group">
 							<label>&nbsp;</label>
-							<select class="form-control">
-								<option value="01:00">01:00 AM</option>
-								<option value="02:00">02:00 AM</option>
-								<option value="03:00">03:00 AM</option>
-								<option value="04:00">04:00 AM</option>
-								<option value="05:00">05:00 AM</option>
-								<option value="06:00">06:00 AM</option>
-								<option value="07:00">07:00 AM</option>
-								<option value="08:00">08:00 AM</option>
-								<option value="09:00">09:00 AM</option>
-								<option value="10:00">10:00 AM</option>
-								<option value="11:00">11:00 AM</option>
-								<option value="12:00">12:00 AM</option>
-								<option value="13:00">01:00 PM</option>
-								<option value="14:00">02:00 PM</option>
-								<option value="15:00">03:00 PM</option>
-								<option value="16:00">04:00 PM</option>
-								<option value="17:00">05:00 PM</option>
-								<option value="18:00">06:00 PM</option>
-								<option value="19:00">07:00 PM</option>
-								<option value="20:00">08:00 PM</option>
-								<option value="21:00">09:00 PM</option>
-								<option value="22:00">10:00 PM</option>
-								<option value="23:00">11:00 PM</option>
-								<option value="24:00">12:00 PM</option>
-							</select>
+							<select name="srchtimestart" id="srchtimestart" class="form-control">
+                    <option value="">Select Time</option>
+                        <?php foreach($times as $key=>$val){ ?>
+                        <option value="<?php echo $val; ?>"><?php echo $val; ?></option> 
+                        <?php } ?>
+                  </select>
 						</div>
 						<input type="submit" class="btn btn-default sr-btn" value="">
 					</form>
@@ -168,3 +152,52 @@
 
 
 <!-----------footer-section-------------->
+
+<script>
+$(function() {
+    var fromDate = $("#srchdate_start").datepicker({
+        changeMonth: true,
+        minDate: 0,
+        minDate: new Date(),
+        onSelect: function(selectedDate) {
+            var instance = $(this).data("datepicker");
+            var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
+            toDate.datepicker("option", "minDate", date);
+        }
+    });
+
+    var toDate = $("#srchdate_end").datepicker({
+    	minDate: 0,
+        minDate: new Date(),
+        changeMonth: true
+    });
+});
+
+/// google location search
+
+google.maps.event.addDomListener(window, 'load', function () {
+  var places = new google.maps.places.Autocomplete(document.getElementById('txtPlaces'));
+  google.maps.event.addListener(places, 'place_changed', function () {
+    var place = places.getPlace();
+    var address = place.formatted_address;
+    var latitude = place.geometry.location.lat();
+    var longitude = place.geometry.location.lng();
+    $("#latitude").val(latitude);
+    $("#longitude").val(longitude);
+    
+    for (var i = 0; i < place.address_components.length; i++) {
+            var addressType = place.address_components[i].types[0];
+            // console.log("addressType:" + addressType);
+            if (addressType == 'country') {
+                var val = place.address_components[i].long_name;
+                // console.log("val:" + val);
+                $('.sel-country option[value="'+val+'"]').attr("selected",true);
+            }
+        }
+    
+  });
+});
+
+
+</script>
+

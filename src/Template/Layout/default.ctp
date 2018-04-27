@@ -59,7 +59,7 @@ $cakeDescription = '';
  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>  
  <script src="https://apis.google.com/js/platform.js"></script> 
  
-  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBQrWZPh0mrrL54_UKhBI2_y8cnegeex1o&sensor=false&libraries=places"></script>   
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQrWZPh0mrrL54_UKhBI2_y8cnegeex1o&sensor=false&libraries=places"></script>   
   
  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <style>
@@ -184,7 +184,7 @@ $cakeDescription = '';
 								<li class="active"><a href="<?php echo $this->request->webroot . "staticpages/makemoneywatercrafts"; ?>">List Your Water Crafts</a></li>
 								<li><a href="#">Learn More</a>
 									<ul class="sub-menu">
-	<li class="<?php  if($this->request->params['action'] == 'search' ) { echo "active"; }?>"> <a href="<?php echo $this->request->webroot; ?>products/search"><i class="fa fa-search" aria-hidden="true"></i>Search</a></li>								
+	<!-- <li class="<?php  if($this->request->params['action'] == 'search' ) { echo "active"; }?>"> <a href="<?php echo $this->request->webroot; ?>products/search"><i class="fa fa-search" aria-hidden="true"></i>Search</a></li> -->								
 
 										<li><a href="booking.html">Booking Watercrafts</a></li>
 										<li><a href="rent-a-craft.html">Renting Watercrafts</a></li>
@@ -643,4 +643,5 @@ jQuery("#loginbutton").click(function(event) {
     
 </body>
 </html> 
+
 

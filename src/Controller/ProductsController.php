@@ -36,7 +36,7 @@ class ProductsController extends AppController
 
 
 
-        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','searchajax','clear' ,'search','view',
+        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','searchdata','searchajax','clear' ,'search','view',
             'index','addtocart','productbycat','promoteproduct','addsellproduct','currencyconverter','savereview']);            
 
         $this->authcontent();        
@@ -194,7 +194,7 @@ class ProductsController extends AppController
        if($this->request->data['category_type']){
       $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND lat != '' HAVING distance < 5";
     }else{
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND  lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5";
     }
 
     $data = $conn->execute($query);
@@ -218,25 +218,62 @@ class ProductsController extends AppController
 
     }
 
+    public function searchdata() {
+
+      $conn = ConnectionManager::get('default');
+
+       $lat = $this->request->getQuery('latitude');
+       $long = $this->request->getQuery('longitude');
+
+       if($this->request->getQuery('latitude')){
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+    }else{
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5";
+    }
+
+     $categories = $this->Categories->find('all')->all(); 
+
+    $data = $conn->execute($query);
+    $products = $data->fetchAll('assoc');
+    print_r($product);
+    $this->set(compact('products','categories')); 
+        $this->set('_serialize', ['products','categories']);
+
+       
+
+    }
+
 
     
     public function search() { 
 
-      // display list only
 
-      $this->loadModel('Products');
-        $this->loadModel('Categories'); 
-        $products = $this->Products->find('all',['contain'=>['Categories','Reviews'], 'conditions' => ['Products.status' => 1], 'order' => ['Products.id DESC'] ]);
+       $conn = ConnectionManager::get('default');
+       $lat = $this->request->getQuery('latitude');
+       $long = $this->request->getQuery('longitude');
 
-      $categories = $this->Categories->find('all')->all(); 
+       if($this->request->getQuery('latitude')){
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+    }else{
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+    }
 
-    
-        $products = $products->all(); 
-        $products = $products->toArray(); 
-        $this->set(compact('products','categories')); 
-        $this->set('_serialize', ['products','categories']);
-        
-        $markers = json_encode( $products );
+    $categories = $this->Categories->find('all')->all(); 
+
+   // $color = $this->Products->find(['color'])->group('color'); 
+    $color = $this->Products->find('all',['group' => 'Products.color','fields'=> 'Products.color'])->all();
+  //heighest and smallest value 
+
+    $queryprice = "SELECT MIN(price) AS minprice,MAX(price) AS maxprice FROM products"; 
+    $dataprice = $conn->execute($queryprice);
+    $productsprice = $dataprice->fetchAll('assoc');
+
+
+    $data = $conn->execute($query);
+    $products = $data->fetchAll('assoc');
+         
+        $this->set(compact('products','categories','color','productsprice')); 
+        $this->set('_serialize', ['products','categories','color','productsprice']);
         
     }
     
@@ -688,3 +725,4 @@ else
      
     
 } 
+
