@@ -282,7 +282,6 @@ $times = create_time_range('0:00', '24:00');
 
 $(function() {
     var fromDate = $("#trip_start").datepicker({
-        defaultDate: "+1w",
         changeMonth: true,
         minDate: 0,
         minDate: new Date(),
@@ -294,7 +293,7 @@ $(function() {
     });
 
     var toDate = $("#trip_end").datepicker({
-        defaultDate: "+1w",
+        minDate: 0,
         changeMonth: true
     });
 });

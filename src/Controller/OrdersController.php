@@ -180,8 +180,8 @@ class OrdersController extends AppController
             <input type=\"hidden\" name=\"currency_code\" value=\"USD\">
             <input type=\"hidden\" name=\"custom\" value=\"$order->id\">
             <input type=\"hidden\" name=\"amount\" value=\"$price\">
-            <input type=\"hidden\" name=\"return\" value=\"http://singhgurpreet.crystalbiltech.com/rentapp/orders/success/$order_id\"> 
-            <input type=\"hidden\" name=\"notify_url\" value=\"http://singhgurpreet.crystalbiltech.com/trip/orders/ipn\">
+            <input type=\"hidden\" name=\"return\" value=\"https://gurpreet.gangtask.com/rentapp/orders/success/$order_id\"> 
+            <input type=\"hidden\" name=\"notify_url\" value=\"https://gurpreet.gangtask.com/rentapp/orders/ipn\">
             </form>";
             echo "<script>document._xclick.submit();</script>";
         }        
@@ -235,3 +235,4 @@ public function success($order_id = null){
 
    
 }
+

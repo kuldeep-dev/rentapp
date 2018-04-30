@@ -43,7 +43,7 @@ $times = create_time_range('0:00', '24:00');
                 <div class="form-group">
                   <label>Where</label>
                   <!-- <input type="text" class="form-control" name="fn" placeholder="Enter Your Address"> -->
-                  <input class="form-control tlt_form_field" name="search" id="txtPlaces" type="text" placeholder="Enter your location">
+                  <input class="form-control tlt_form_field" required="required" name="search" id="txtPlaces" type="text" placeholder="Enter your location">
                   <input type="hidden" id="latitude" name="latitude" class="form-control" />
                   <input type="hidden" id="longitude" name="longitude" class="form-control" />
                 </div>
@@ -94,14 +94,14 @@ $times = create_time_range('0:00', '24:00');
               <div class="content_left">
                 <div class="result">
                   <label class="totalresult"><?php echo count($products); ?> Result</label>
-                  <button type="button" class="btn btn-default">Reset Filter</button>
+                  <button type="button" id="resetfilter" class="btn btn-default">Reset Filter</button>
                 </div>
                 <div class="left_form">
                   <form class="form-horizontal" name="Filter_Form" method="post" action="#">
                     <div class="form-group">                    
                       <label>Sort By</label>
                       <select class="form-control" id="pricehighlow">
-                        <option value="" disabled="disabled">Select</option>
+                        <option value="" disabled="disabled" selected="selected">Select</option>
                         <option value="price_low">Price: low to high</option>
                         <option value="price_high">Price: high to low</option>
                       </select>
@@ -582,9 +582,11 @@ $('#coloroption').on('change', function (e) {
 ////// range slider
 // var min = 0;
 // var max = 800;
+
+$(function() {
 var min = parseInt('<?php echo round($productsprice[0]["minprice"]);?>');
 var max = parseInt('<?php echo round($productsprice[0]["maxprice"]);?>');
-var minvalue =[];
+var minvalue = "";
 $( "#price-range" ).slider({
     range: true,
     min: min,
@@ -592,20 +594,53 @@ $( "#price-range" ).slider({
     values: [ min, max ],
     slide: function( event, ui ) {
     $("#amount1").val( "$" + ui.values[ 0 ]);
-    $("#amount2").val( "$" + ui.values[ 1 ]);
-    minvalue.push($( "#amount1" ).val());
+    $("#amount2").val( "$" + ui.values[ 1 ]); 
+    },
+    change: function(event, ui) {
+        minvalue = $("#amount1").val();
+        maxvalue = $("#amount2").val();
+        var minvalue1 = minvalue.split('$');
+        var maxvalue1 = maxvalue.split('$');
+        var alldatavalue =$.grep(alldata,function(val,i){
+          return parseFloat(val.price) >= minvalue1[1] && parseFloat(val.price) <= maxvalue1[1];
+          });
+          var html = "";
+          totalresult = alldatavalue.length;
+          for(var i=0; i < alldatavalue.length; i++ )
+              {
+              html += '<div class="list_wrap">'
+              html += '<a href="'+ host +'/rentapp/products/booking/'+ alldatavalue[i].id +'">' 
+              html += '<div class="img_sec">'
+              html += '<img src="'+ host +'/rentapp/images/products/'+ alldatavalue[i].image +' " alt="Slide Image">'
+              html += '</div>'
+              html += '<div class="caption">'
+              html += '<h5><a href="'+ host +'/rentapp/products/booking/'+ alldatavalue[i].id +'"></a>'+ alldatavalue[i].name +'</h5>'
+              html += '<div class="tr_rating">'
+              html += '<span>'+ alldatavalue[i].trips +' Booking</span>'
+              html += '<div class="rating">'
+              html += '</div>'
+              html += '</div>'
+              html += '<div class="price">'
+              html += '<h5>$'+ alldatavalue[i].price +'</h5>'
+              html += '<span>Per Hour</span>'
+              html += '</div>'
+              html += '</div>'
+              html += '</a>  '
+              html += '</div>'
+            }
+            $('.sr-inner_wrap').html(html);
+            $('.totalresult').html(totalresult +" "+"Result");
 
-    $.session.clear();
     }
   });
   $( "#amount1" ).val( "$" + $( "#price-range" ).slider( "values", 0 ) );
   $( "#amount2" ).val( "$" + $( "#price-range" ).slider( "values", 1 ) );
-    
-    setTimeout(function(){ 
-      alert("hello");
-      var lastEl = minvalue[minvalue.length-1];
-      console.log(lastEl);
-    //console.log($( "#amount2" ).val());
-     }, 2000);
+
+  });
+
+
+$('#resetfilter').click(function() {
+    location.reload();
+});
 
 </script>
