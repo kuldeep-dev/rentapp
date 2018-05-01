@@ -165,9 +165,13 @@ class OrdersController extends AppController
         $order = $this->Orders->save($orders);
         
         
-        
-        
         /*********** Save Order (END)  *********/
+
+       // $returnUrl = Router::url('/', true);  
+       // $ipnNotificationUrl = Router::url('/', true)."orders/ipn";
+
+        //<input type=\"hidden\" name=\"return\" value=\"$returnUrl\">
+        //<input type=\"hidden\" name=\"notify_url\" value=\"$ipnNotificationUrl\"> 
         
         if($order){
             
@@ -180,13 +184,52 @@ class OrdersController extends AppController
             <input type=\"hidden\" name=\"currency_code\" value=\"USD\">
             <input type=\"hidden\" name=\"custom\" value=\"$order->id\">
             <input type=\"hidden\" name=\"amount\" value=\"$price\">
-            <input type=\"hidden\" name=\"return\" value=\"https://gurpreet.gangtask.com/rentapp/orders/success/$order_id\"> 
+            <input type=\"hidden\" name=\"return\" value=\"https://gurpreet.gangtask.com/rentapp/orders/success/$order_id\">
             <input type=\"hidden\" name=\"notify_url\" value=\"https://gurpreet.gangtask.com/rentapp/orders/ipn\">
             </form>";
             echo "<script>document._xclick.submit();</script>";
         }        
         
     } 
+
+
+    public function ipn() {  
+        $fc = fopen('ipn_data.txt', 'wb');
+        ob_start();
+        print_r($_POST);
+        $req = 'cmd=' . urlencode('_notify-validate');
+        foreach ($_POST as $key => $value) {
+            $value = urlencode(stripslashes($value));
+            $req .= "&$key=$value";
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.sandbox.paypal.com/cgi-bin/webscr');
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Host: www.developer.paypal.com'));
+        $res = curl_exec($ch);
+        curl_close($ch);
+        if (strcmp($res, "VERIFIED") == 0) {
+            $custom_field = $_POST['custom'];
+            $payer_email = $_POST['payer_email'];
+            $trn_id = $_POST['txn_id'];
+            $pay = $_POST['mc_gross'];
+            $this->loadModel('Orders');
+            $this->Orders->query("UPDATE `orders` SET `order_status` = 1, `payment_status` = '$res',`transaction_id`='$trn_id' WHERE `id` ='$custom_field';");
+            $this->set('smtp_errors', "none");
+        } else if (strcmp($res, "INVALID") == 0) {
+            
+        } 
+        $xt = ob_get_clean(); 
+        fwrite($fc, $xt);
+        fclose($fc);
+        exit;
+         
+    }
 
 
 public function success($order_id = null){

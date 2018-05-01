@@ -267,10 +267,8 @@ google.maps.event.addDomListener(window, 'load', function () {
     
     for (var i = 0; i < place.address_components.length; i++) {
             var addressType = place.address_components[i].types[0];
-            // console.log("addressType:" + addressType);
             if (addressType == 'country') {
                 var val = place.address_components[i].long_name;
-                // console.log("val:" + val);
                 $('.sel-country option[value="'+val+'"]').attr("selected",true);
             }
         }
@@ -284,53 +282,92 @@ google.maps.event.addDomListener(window, 'load', function () {
     /*** Google Map ***/
     
 var host =  window.location.origin;
-//console.log(host);    
-var allocation = $.parseJSON('<?php echo json_encode($products) ?>');  
-//console.log("location",allocation);
-var alllocations = [];
-var i;  
-for(i=0; i<Object.keys(allocation).length; i++){
+$(document).ready(function(){
+      // cluster marker
+      var allocation = $.parseJSON('<?php echo json_encode($products) ?>');  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
     if(allocation[i]['lat'] != ''){
         alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
-    }    
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
 }
-  var map = new google.maps.Map(document.getElementById('mapview'), {
-    zoom: 10,
-    center: new google.maps.LatLng(alllocations[0][1], alllocations[0][2]),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  });
-  
-  var infowindow = new google.maps.InfoWindow();
-  var marker, i;
-  for (i = 0; i < alllocations.length; i++) {  
-    marker = new google.maps.Marker({
-      position: new google.maps.LatLng(alllocations[i][1], alllocations[i][2]),
-      map: map
-    });
-    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-      return function() {
-        //infowindow.setContent(alllocations[i][0]);
-        infowindow.setContent('<div class="list_wrap">'+
-          '<a href="'+ host +'/rentapp/products/booking/'+ alllocations[i][3] +' ">'+  
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
                 '<div class="img_sec">'+
-                  '<img src="'+ host +'/rentapp/images/products/'+ alllocations[i][4] +' " alt="Image">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
                 '</div>'+
                 '<div class="caption">'+
-                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ alllocations[i][3] +' ">'+ alllocations[i][0] +'</a></h5>'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
                   '<div class="tr_rating">'+
-                    '<span>'+ alllocations[i][6] +' Trips</span>'+
+                    '<span>'+ point.trips +' Trips</span>'+
                   '</div>'+
                   '<div class="price">'+
-                    '<h5>$ '+ alllocations[i][5] +'</h5>'+
+                    '<h5>$ '+ point.price +'</h5>'+
                       '<span>Per Hour</span>'+
                   '</div>'+
                 '</div>'+
                 '</a>'+
-              '</div>');
-        infowindow.open(map, marker);
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
       }
-    })(marker, i));
-  }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    });
   
 /*** Google Map (END) ***/  
 
@@ -379,6 +416,99 @@ jQuery("#srch-button").click(function(event) {
                       }
                       $('.sr-inner_wrap').html(html);
                       $('.totalresult').html(totalresult +" "+"Result");
+//// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldata;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
                             
                        }
                       
@@ -424,6 +554,100 @@ $('#pricehighlow').on('change', function (e) {
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
 
+           //// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldata;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
+
     }
     else if (valueSelected == "price_high")
     {
@@ -457,6 +681,101 @@ $('#pricehighlow').on('change', function (e) {
             }
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
+
+//// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldata;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
+
     }
 
 });
@@ -465,13 +784,11 @@ $('#pricehighlow').on('change', function (e) {
 $('#vehicletype').on('change', function (e) {
     var optionSelected1 = $("option:selected", this);
     valueSelected1 = this.value;
-    console.log(valueSelected1);
     if (valueSelected1 == "Old" )
     {
      alldataold= alldata.filter(function(hero) {
         return hero.conditions == "Old";
       });
-      console.log(alldataold);
        var html = "";
        totalresult = alldataold.length;
        for(var i=0; i < alldataold.length; i++ )
@@ -498,6 +815,100 @@ $('#vehicletype').on('change', function (e) {
             }
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
+
+            //// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldataold;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/   
           
 
     }
@@ -506,7 +917,6 @@ $('#vehicletype').on('change', function (e) {
      alldatanew = alldata.filter(function(hero) {
         return hero.conditions == "New";
       });
-      console.log(alldatanew);
        var html = "";
        totalresult = alldatanew.length;
        for(var i=0; i < alldatanew.length; i++ )
@@ -533,6 +943,102 @@ $('#vehicletype').on('change', function (e) {
             }
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
+
+//// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldatanew;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
+
+
     }
 
 });
@@ -572,6 +1078,101 @@ $('#coloroption').on('change', function (e) {
             }
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
+
+
+            //// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldatacolor;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
           
 }
     
@@ -631,6 +1232,101 @@ $( "#price-range" ).slider({
             $('.sr-inner_wrap').html(html);
             $('.totalresult').html(totalresult +" "+"Result");
 
+ //// show map listing
+
+    /*** Google Map ***/
+    
+var host =  window.location.origin;
+$(document).ready(function(){
+      // cluster marker
+      var allocation = alldatavalue;  
+      var alllocations = [];
+      var clusterMarker = []; 
+      var sampleData  = [];
+      for(i=0; i<Object.keys(allocation).length; i++){
+    if(allocation[i]['lat'] != ''){
+        alllocations.push([allocation[i]['name'],allocation[i]['lat'],allocation[i]['long'], allocation[i]['id'],allocation[i]['image'],allocation[i]['price'],allocation[i]['trips']] );
+    } 
+      
+      sampleData.push({
+          lat:allocation[i].lat,
+          lng:allocation[i].long,
+          name:allocation[i].name,
+          id:allocation[i].id,
+          image:allocation[i].image,
+          price:allocation[i].price,
+          trips:allocation[i].trips,
+          }); 
+}
+
+      var map = new google.maps.Map(document.getElementById('mapview'), {
+        center: new google.maps.LatLng(sampleData[0].lat,sampleData[0].lng),
+        zoom: 5,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+
+      
+
+      // Create infowindow
+      var infoWindow = new google.maps.InfoWindow();
+      //var marker, i;
+
+       // Create OverlappingMarkerSpiderfier instsance
+      var oms = new OverlappingMarkerSpiderfier(map,
+        {markersWontMove: true, markersWontHide: true}); 
+
+      // This is necessary to make the Spiderfy work
+      oms.addListener('click', function(marker) {
+        infoWindow.setContent(marker.desc);
+        infoWindow.open(map, marker);
+      });
+
+
+      for (var i = 0; i < sampleData.length; i ++) {
+
+        var point = sampleData[i];
+        var location = new google.maps.LatLng(point.lat, point.lng);
+
+        // create marker at location
+
+
+       var marker = new google.maps.Marker({
+          position: location,
+          map: map
+        });
+
+         // text to appear in window
+        marker.desc = '<div class="list_wrap">'+
+          '<a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+  
+                '<div class="img_sec">'+
+                  '<img src="'+ host +'/rentapp/images/products/'+ point.image +' " alt="Image">'+
+                '</div>'+
+                '<div class="caption">'+
+                  '<h5><a href="'+ host +'/rentapp/products/booking/'+ point.id +' ">'+ point.name +'</a></h5>'+
+                  '<div class="tr_rating">'+
+                    '<span>'+ point.trips +' Trips</span>'+
+                  '</div>'+
+                  '<div class="price">'+
+                    '<h5>$ '+ point.price +'</h5>'+
+                      '<span>Per Hour</span>'+
+                  '</div>'+
+                '</div>'+
+                '</a>'+
+              '</div>';
+
+        // needed to make Spiderfy work
+        oms.addMarker(marker);
+
+        // needed to cluster marker
+        clusterMarker.push(marker);
+      }
+
+      new MarkerClusterer(map, clusterMarker, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m', maxZoom: 10});
+    })
+  
+/*** Google Map (END) ***/  
+
+
     }
   });
   $( "#amount1" ).val( "$" + $( "#price-range" ).slider( "values", 0 ) );
@@ -644,3 +1340,4 @@ $('#resetfilter').click(function() {
 });
 
 </script>
+
