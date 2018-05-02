@@ -136,8 +136,8 @@ $times = create_time_range('0:00', '24:00');
 								<div class="content-sec">
 									<h2>The Water Crafters That Pays For Itself</h2>
 									<p>Have you ever been on vacation and wanted to get out and enjoy the water whether its on a jet ski or a yacht, but all the rental places are sold out or just too busy? Jet ski to Yacht makes it easier to find great deals for renting watercraft's from local residents in your area! Not only does Jet ski to Yacht help find your next watercraft to enjoy, it also allows you the ability to rent out YOUR watercraft to make a quick buck! Simply sign up and create an account to quickly find rental deals near you or list your own to start earning now!</p>
-									<a href="#" class="btn btn-default">List Like You Have</a>
-									<a href="#" class="btn btn-default">Rent Your Water Crafts</a>
+									<a href="<?php echo $this->request->webroot; ?>favourites/favourite" class="btn btn-default">List Like You Have</a>
+									<a href="<?php echo $this->request->webroot . "products/addyourcraft"; ?>" class="btn btn-default">Rent Your Water Crafts</a>
 								</div>
 							</div>
 							
@@ -200,4 +200,3 @@ google.maps.event.addDomListener(window, 'load', function () {
 
 
 </script>
-

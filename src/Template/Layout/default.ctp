@@ -21,7 +21,7 @@ $cakeDescription = '';
 <?=  $this->Html->charset() ?>     
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">	
 <title><?= $cakeDescription ?> Boat Rent</title>   
 <link rel="icon" type="image/x-icon" href="<?php echo $this->request->webroot."images/website/favicon-32x32.png";?>" />
 
@@ -186,12 +186,9 @@ $cakeDescription = '';
 							<ul class="nav navbar-nav navbar-right">
 								<li class="active"><a href="<?php echo $this->request->webroot . "staticpages/makemoneywatercrafts"; ?>">List Your Water Crafts</a></li>
 								<li><a href="#">Learn More</a>
-									<ul class="sub-menu">
-	<!-- <li class="<?php  if($this->request->params['action'] == 'search' ) { echo "active"; }?>"> <a href="<?php echo $this->request->webroot; ?>products/search"><i class="fa fa-search" aria-hidden="true"></i>Search</a></li> -->								
-
-										<li><a href="booking.html">Booking Watercrafts</a></li>
-										<li><a href="rent-a-craft.html">Renting Watercrafts</a></li>
-										<li><a href="list-your-craft.html">Make Money From Your Car</a></li>
+									<ul class="sub-menu">	
+										<li><a href="<?php echo $this->request->webroot . "products/rentacraft"; ?>">Renting Watercrafts</a></li>
+										<li><a href="<?php echo $this->request->webroot . "staticpages/makemoneywatercrafts"; ?>">Make Money From Your Water Crafts</a></li>
 										<li><a href="<?php echo $this->request->webroot . "staticpages/trustandsafety"; ?>">Trust & Safety</a></li>
 										<li class="<?php  if($this->request->params['action'] == 'contact' ) { echo "active"; }?>"><a href="<?php echo $this->request->webroot; ?>users/contact">Contact Us</a></li>
 									</ul>
@@ -213,6 +210,10 @@ $cakeDescription = '';
 
                     					<li class="<?php  if($this->request->params['action'] == 'upcoming' ) { echo "active"; }?>">    
                      					<a href="<?php echo $this->request->webroot; ?>orders/upcoming">My Upcoming Trips</a>  
+                    					</li>
+
+                    					<li class="<?php  if($this->request->params['action'] == 'upcoming' ) { echo "active"; }?>">    
+                     					<a href="<?php echo $this->request->webroot; ?>users/myproduct">My Water Crafts</a>  
                     					</li>
 
 									</ul>
@@ -266,8 +267,6 @@ $cakeDescription = '';
 								<ul>
 									<li><a href="<?php echo $this->request->webroot . "staticpages/howweworks"; ?>">How we Works</a></li>
 									<li><a href="<?php echo $this->request->webroot . "staticpages/protections"; ?>">Protection</a></li>
-									<li><a href="<?php echo $this->request->webroot . "staticpages/privacy"; ?>">Policies</a></li>
-									<li><a href="<?php echo $this->request->webroot . "staticpages/trustandsafety"; ?>">Trust & Safety</a></li>
 									<li><a href="<?php echo $this->request->webroot . "staticpages/ownertools"; ?>">Owner tools</a></li>
 									<li><a href="<?php echo $this->request->webroot . "staticpages/faq"; ?>">Traveler FAQ's</a></li>
 								</ul>
@@ -276,10 +275,14 @@ $cakeDescription = '';
 						<div class="col-md-3 col-sm-3">
 							<div class="foot-link">
 								<div class="head-sec">
-									<h5>Learn More</h5>
+									<h5>Legal</h5>
 								</div>
-								<ul class="citiz">
-									<li><a href="#">Atlanta</a></li>
+								<!-- <ul class="citiz"> -->
+								<ul>
+									<li><a href="<?php echo $this->request->webroot . "staticpages/privacy"; ?>">Policies</a></li>
+									
+									
+									<!-- <li><a href="#">Atlanta</a></li>
 									<li><a href="#">Montreal</a></li>
 									<li><a href="#">Boston</a></li>
 									<li><a href="#">San Diego</a></li>
@@ -292,8 +295,10 @@ $cakeDescription = '';
 									<li><a href="#">Toronto</a></li>
 									<li><a href="#">Houston</a></li>
 									<li><a href="#">Washington, DC</a></li>
-									<li><a href="#">Los Angeles</a></li>
-									<li><a href="#">View airports</a></li>
+									<li><a href="#">Los Angeles</a></li> -->
+									<li><a href="<?php echo $this->request->webroot . "staticpages/trustandsafety"; ?>">Trust & Safety</a></li>
+									<li><a href="<?php echo $this->request->webroot . "staticpages/term"; ?>">Terms</a></li>
+
 								</ul>
 							</div>
 						</div>
@@ -646,5 +651,4 @@ jQuery("#loginbutton").click(function(event) {
     
 </body>
 </html> 
-
 

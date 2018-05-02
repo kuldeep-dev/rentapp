@@ -8,16 +8,17 @@
                 <h2>My Favourites</h2>
               </div>
               <div class="trip-list">
-              <?php if(!empty($yourfavourite)){
-                        foreach($yourfavourite as $favourite){
-                          
-                        ?>
+              
                 <ul>
+                <?php if(!empty($yourfavourite)){
+                        foreach($yourfavourite as $favourite){
+                        ?>
                   <li>
                     <span class="img-crafting">
-                      <img src="<?php echo $this->request->webroot."images/products/".$favourite['product']['image']; ?>"" alt="Boat Image">
+                    <a href="<?php echo $this->request->webroot."products/booking/" . $favourite['product']['id'];?>">
+                      <img src="<?php echo $this->request->webroot."images/products/".$favourite['product']['image']; ?>"" alt="Boat Image"></a>
                     </span>
-                    <h5><?php echo $favourite['product']['name'] ?></h5>
+                    <h5><a href="<?php echo $this->request->webroot."products/booking/" . $favourite['product']['id'];?>"><?php echo $favourite['product']['name'] ?></a></h5>
                     <ul class="details">
                       <li>
                         <label>Description:</label> <?php echo $favourite['product']['description'] ?>
@@ -32,10 +33,10 @@
                       
                     </div>
                   </li>
-                  
+                  <?php } } else { echo "No data available"; } ?> 
                 </ul>
 
-                <?php } } ?> 
+                
               </div>
             </div>
           </div>

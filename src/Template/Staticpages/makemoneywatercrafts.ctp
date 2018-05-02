@@ -1,6 +1,3 @@
-<!-- <?php if($privacy->title){ echo $privacy->title; }?></h1>
-<?php if($privacy->content){ echo $privacy->content; }?> -->
-		
 <section class="st_content">
 		<section class="yacht_banner">
 			<img src="<?php echo $this->request->webroot ?>images/list-your-craft-banner.jpg" alt="Banner">
@@ -12,8 +9,7 @@
 							<div class="head-sec">
 								<h2>Be Your Own Boss</h2>
 								<p>List your watercraft, Starting earning fast!</p>
-								<a href="#" class="btn btn-default rent">Rent Your Water Crafts</a>
-								<a href="#" class="btn btn-default rent">List Your Water Crafts</a>
+								<a href="<?php echo $this->request->webroot . "products/addyourcraft"; ?>" class="btn btn-default rent">List Your Water Crafts</a>
 							</div>
 						</div>
 					</div>
@@ -101,6 +97,8 @@
 							<h2>Testimonial's</h2>
 						</div>
 						<div class="inner_sec test_inner">
+
+
 							<div class="wrap_test">
 								<div class="avatar">
 									<img src="<?php echo $this->request->webroot ?>images/testimonial.jpg" alt="Avatar">
@@ -113,30 +111,8 @@
 									<span class="name">Eugene P.</span>
 								</div>
 							</div>
-							<div class="wrap_test">
-								<div class="avatar">
-									<img src="<?php echo $this->request->webroot ?>images/testimonial.jpg" alt="Avatar">
-								</div>
-								<div class="text_sec">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
-									Donec dapibus velit ut vulputate consequat. Nullam ipsum sem, <br />
-									imperdiet rutrum purus sed, varius fermentum lectus. Nam tempor <br />
-									quam urna, semper tristique arcu fermentum id.</p>
-									<span class="name">Eugene P.</span>
-								</div>
-							</div>
-							<div class="wrap_test">
-								<div class="avatar">
-									<img src="<?php echo $this->request->webroot ?>images/testimonial.jpg" alt="Avatar">
-								</div>
-								<div class="text_sec">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
-									Donec dapibus velit ut vulputate consequat. Nullam ipsum sem, <br />
-									imperdiet rutrum purus sed, varius fermentum lectus. Nam tempor <br />
-									quam urna, semper tristique arcu fermentum id.</p>
-									<span class="name">Eugene P.</span>
-								</div>
-							</div>
+							
+							
 						</div>
 					</div>
 				</div>

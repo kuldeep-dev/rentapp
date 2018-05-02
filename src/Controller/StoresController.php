@@ -700,4 +700,3 @@ class StoresController extends AppController
     
         
 }
-

@@ -235,7 +235,7 @@ a{
 }
 .st_banner .caption{
 	height:45%;
-	width:70%;
+	width:80%;
 	position:absolute;
 	left:0;
 	top:0;
@@ -1279,7 +1279,7 @@ a{
 .search_banner .sr-form form .form-group{
 	display:block;
 	position:relative;
-	width:16.666%;
+	width:16%;
 	float:left;
 	padding:26px 10px 0px 10px;
 }
@@ -1287,6 +1287,9 @@ a{
 .search_banner .sr-form form .form-group:nth-child(2),
 .search_banner .sr-form form .form-group:nth-child(4){
 	border-right:1px solid #ddd;
+}
+.search_banner .sr-form form .form-group:nth-child(2){
+	width:20%;
 }
 .search_banner .sr-form form .form-group label{
 	display:block;
@@ -1313,6 +1316,7 @@ a{
 	color:rgba(0, 0, 0, 0.65);
 	text-transform:uppercase;
 }
+
 .search_banner .sr-form form .form-group .form-control::-webkit-input-placeholder{
 	color:rgba(0, 0, 0, 0.65);
 }
@@ -1328,7 +1332,7 @@ a{
 .search_banner .sr-form form .form-group .form-control:-ms-input-placeholder{
 	color:rgba(0, 0, 0, 0.65);
 }
-.search_banner .sr-form form input[type="submit"]{
+.search_banner .sr-form form input[type="button"]{
 	padding:0px;
 	border:none;
 	height:45px;
@@ -2171,11 +2175,13 @@ a{
     letter-spacing: 2px;
 }
 .trip-sec .trip-list ul{
-	margin:0px;
+	display:flex;
+	flex-wrap:wrap;
+	flex-direction:row;
 }
 .trip-sec .trip-list ul li{
-	width:49%;
-	float:left;
+	flex:0 0 49%;
+	max-width:49%;
 	background-color:#f2f2f2;
 	list-style-type:none;
 	padding:15px 10px;
@@ -2186,7 +2192,7 @@ a{
 	margin-bottom:2%;
 }
 .trip-sec .trip-list ul li:nth-child(even){
-	float:right;
+	margin-left:auto;
 }
 .trip-sec .trip-list ul li span{
 	display:inline-block;
@@ -2213,7 +2219,8 @@ a{
     background-repeat: no-repeat;
 }
 .trip-sec .trip-list ul li .details li{
-	width:100%;
+	flex:0 0 100%;
+	max-width:100%;
 	background-color:transparent;
 	padding:0px;
 	min-height:auto;
@@ -2284,4 +2291,133 @@ a{
 .log_in:hover{
 	color:#fff;
 	text-decoration: none;
+}
+
+/* List Craft Page Css Include Here
+===================================*/
+.checkout-sec .form-sec .form-horizontal .form-group{
+	margin-left:0px;
+	margin-right:0px;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label{
+	width: 100%;
+    letter-spacing: 2px;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label.radio-inline{
+	width:auto;
+	padding-left:35px;
+	position:relative;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label span.radio-btn{
+	display:inline-block;
+	height:25px;
+	width:25px;
+	border-radius:50%;
+	background-color:#222;
+	position:absolute;
+	left:0px;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label span.radio-btn:after{
+	content: '';
+    position: absolute;
+    left: 10px;
+    top: 6px;
+    height: 10px;
+    width: 5px;
+    border: solid #fff;
+    border-width: 0px 1px 1px 0px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    display: none;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label input[type="radio"]:checked + span.radio-btn:after{
+	display:block;
+}
+.checkout-sec .form-sec .form-horizontal .form-group label input[type="radio"]{
+	opacity:0;
+}
+.checkout-sec .form-sec .form-horizontal .form-group .form-control{
+	height: 45px;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.65);
+}
+.checkout-sec .form-sec .form-horizontal .btn-sub{
+	height: 45px;
+    float: right;
+    border: none;
+    border-radius: 0px;
+    box-shadow: none;
+    background: none;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: none;
+    background-color: #231f20;
+}
+.checkout-sec .avatar-wrap .choose-file{
+	position: relative;
+}
+.checkout-sec .avatar-wrap .choose-file input[type="file"]{
+	position: absolute;
+    z-index: 9;
+    opacity: 0;
+}
+.checkout-sec .avatar-wrap .choose-file span.choose{
+	display: block;
+    height: 34px;
+    width: 100%;
+    text-align: center;
+    line-height: 34px;
+    background-color: #231f20;
+	font-size:16px;
+	letter-spacing:2px;
+    color: #fff;
+    position: absolute;
+    top: 0;
+    text-transform: uppercase;
+}
+
+/* List Craft Page Css Include Here
+===================================*/
+.trip-sec.list-craft-sh .trip-list ul{
+	display:flex;
+	flex-wrap:wrap;
+	flex-direction:row;
+	
+}
+.trip-sec.list-craft-sh .trip-list ul li{
+	flex:0 0 49%;
+	max-width:49%;
+	float:none;
+}
+.trip-sec.list-craft-sh .trip-list ul li p{
+	padding-bottom:15px;
+	margin-bottom:15px;
+	border-bottom:1px solid #dedede;
+}
+.trip-sec.list-craft-sh .trip-list ul li:nth-child(even){
+	margin-left:auto;
+}
+.trip-sec.list-craft-sh .trip-list ul li .details li{
+	flex:0 0 100%;
+	max-width:100%;
+}
+.trip-sec.list-craft-sh .trip-list ul li .details li a{
+	text-decoration: none;
+    display: inline-block;
+    padding: 0px 21px;
+    height: 34px;
+    line-height: 34px;
+    text-transform: uppercase;
+    background-color: #231f20;
+    color: #fff;
 }

@@ -9,30 +9,34 @@
                 <h2>My Upcoming Trips</h2>
               </div>
               <div class="trip-list">
-                        <?php if(!empty($yourorders)){
-                        foreach($yourorders as $order){
-                          if (strtotime($order['start_date']) >= time())
-                          {
-                        ?>
+                        
 
                 <ul>
+                <?php if(!empty($yourorders)){
+                        foreach($yourorders as $order){
+                          $count  = 0;
+                          if (strtotime($order['start_date']) >= time())
+                          {
+                            $count++;
+                        ?>
                   <li>
                     <span class="img-crafting">
-                      <img src="<?php echo $this->request->webroot."images/products/".$order['product']['image']; ?>" alt="Boat Image">
+                    <a href="<?php echo $this->request->webroot."products/booking/" . $order['product']['id'];?>">
+                      <img src="<?php echo $this->request->webroot."images/products/".$order['product']['image']; ?>" alt="Boat Image"></a>
                     </span>
-                    <h5><?php echo $order['product']['name'] ?></h5>
+                    <h5><a href="<?php echo $this->request->webroot."products/booking/" . $order['product']['id'];?>"><?php echo $order['product']['name'] ?></a></h5>
                     <ul class="details">
                       <li>
-                        <label>Date: <?php echo $order['start_date'] ?><?php echo " " ?><?php echo $order['end_date'] ?></label> 
+                         <label>Date: <?php echo " ". $order['start_date'] ?><?php echo " " ?><?php echo " To "." ". $order['end_date'] ?></label> 
                       </li>
                       <li>
-                        <label>Time:</label> <?php echo $order['start_time'] ?><?php echo " " ?><?php  echo $order['end_time'] ?>
+                        <label>Time:</label> <?php echo " ". $order['start_time'] ?><?php echo " " ?><?php  echo " - "." ". $order['end_time'] ?>
                       </li>
                       <li>
-                        <label>Price:</label> $<?php echo $order['total_price']?>
+                        <label>Price:</label> $<?php echo " ". $order['total_price']?>
                       </li>
                     <li>
-                        <label>Review:</label><?php echo $order['review']['review']?>
+                        <label>Review:</label><?php echo " ".$order['review']['review']?>
                       </li>
                       <div class="star_rating">
                   <?php
@@ -46,16 +50,23 @@
                     </ul>
                     <div class="pull-right" style="margin-top: 10px;"> 
                         <?php if($order['review'] == ""){ ?>
-                        <button type="button" class="btn btn-warning pull-right" id="addreview" data-productid="<?php echo $order['product']['id']; ?>" data-orderid="<?php echo $order['id']; ?>">Write a review</button>
+                        <button type="button" class="btn btn-warning pull-right addreview" id="addreview" data-productid="<?php echo $order['product']['id']; ?>" data-orderid="<?php echo $order['id']; ?>">Write a review</button>
                         <?php }else{ ?>
                         <button type="button" class="btn btn-warning pull-right" disabled="disabled">Reviewed</button>
                         <?php } ?>
                     </div>
                    
                   </li>
+                  <?php } }  } 
+
+                if($count == 0)
+                {
+                  echo "No upcoming trips.";
+                }
+                ?> 
                   
                 </ul>
-                <?php } }  }?> 
+                
 
 
               </div>
@@ -84,7 +95,7 @@
             <form method="post" id="review-form">
                 <div class="star-reviw">
                     <div class="star rating" id="rating"> 
-                        <i class="fa fa-star active" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -117,12 +128,11 @@ $(document).ready(function(){
     });
 });
 
-$("#addreview").click(function(){
+$(".addreview").click(function(){
   var order_id = $(this).attr('data-orderid');
   var product_id = $(this).attr('data-productid');
   $('input[name="order_id"]').val(order_id);
   $('input[name="product_id"]').val(product_id);
-  
   $("#reviewModal").modal();
   
 });

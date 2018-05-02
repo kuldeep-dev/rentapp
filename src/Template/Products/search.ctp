@@ -282,6 +282,7 @@ google.maps.event.addDomListener(window, 'load', function () {
     /*** Google Map ***/
     
 var host =  window.location.origin;
+
 $(document).ready(function(){
       // cluster marker
       var allocation = $.parseJSON('<?php echo json_encode($products) ?>');  
@@ -420,7 +421,6 @@ jQuery("#srch-button").click(function(event) {
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldata;  
@@ -558,7 +558,6 @@ $('#pricehighlow').on('change', function (e) {
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldata;  
@@ -686,7 +685,6 @@ $(document).ready(function(){
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldata;  
@@ -820,7 +818,6 @@ $('#vehicletype').on('change', function (e) {
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldataold;  
@@ -948,7 +945,6 @@ $(document).ready(function(){
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldatanew;  
@@ -1084,7 +1080,6 @@ $('#coloroption').on('change', function (e) {
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldatacolor;  
@@ -1236,7 +1231,6 @@ $( "#price-range" ).slider({
 
     /*** Google Map ***/
     
-var host =  window.location.origin;
 $(document).ready(function(){
       // cluster marker
       var allocation = alldatavalue;  
@@ -1340,4 +1334,3 @@ $('#resetfilter').click(function() {
 });
 
 </script>
-

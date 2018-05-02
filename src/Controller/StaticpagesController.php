@@ -237,11 +237,7 @@ class StaticpagesController extends AppController
     }
 
      public function makemoneywatercrafts(){
-       $ownertools = $this->Staticpages->find('all',['conditions'=>['Staticpages.position'=>'make-money-watercrafts','Staticpages.status'=>1]]);
-       $ownertools = $ownertools->first();  
-    
-       $this->set(compact('makemoneywatercrafts'));
-       $this->set('_serialize', ['makemoneywatercrafts']);    
+       
     }
 
     

@@ -36,8 +36,7 @@ class ProductsController extends AppController
 
 
 
-        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','searchdata','searchajax','clear' ,'search','view',
-            'index','addtocart','productbycat','promoteproduct','addsellproduct','currencyconverter','savereview']);            
+        $this->Auth->allow(['add','booking','slugify' ,'gallerydelete','searchjson','searchdata','searchajax','clear' ,'search','view','index','addtocart','productbycat','promoteproduct','addsellproduct','currencyconverter','savereview']);            
 
         $this->authcontent();        
     }
@@ -722,7 +721,71 @@ else
         $this->set('_serialize', ['bookingdetail']);
 
     } 
+
+    public function rentacraft() {
+
+    } 
+
+
+    public function addyourcraft() {
+       
+         $product = $this->Products->newEntity();
+        if ($this->request->is('post')) {
+
+            $this->request->data['user_id'] = $this->Auth->user('id');
+            $this->request->data['slug'] =$this->slugify($this->request->data['name']);
+
+            $image = $this->request->data['image'];
+            $name = time().$image['name'];
+            $tmp_name = $image['tmp_name'];
+            $upload_path = WWW_ROOT.'images/products/'.$name;
+            move_uploaded_file($tmp_name, $upload_path);
+            $this->request->data['image'] = $name;
+
+            //latlong
+
+            $lat = $_POST['lat'];
+            $lng = $_POST['long'];
+            $data = file_get_contents("http://maps.google.com/maps/api/geocode/json?latlng=$lat,$lng&sensor=false");
+            $data = json_decode($data);
+            $add_array  = $data->results;
+            $add_array = $add_array[0];
+            $add_array = $add_array->address_components;
+            $country = "Not found";
+            $state = "Not found"; 
+            $city = "Not found";
+            foreach ($add_array as $key) {
+            if($key->types[0] == 'administrative_area_level_2')
+            {
+            $city = $key->long_name;
+            }
+            if($key->types[0] == 'administrative_area_level_1')
+            {
+            $state = $key->long_name;
+            }
+            if($key->types[0] == 'country')
+            {
+            $country = $key->long_name;
+            }
+            }
+
+            $this->request->data['city'] = $city;
+
+            $product = $this->Products->patchEntity($product, $this->request->getData());
+            if ($this->Products->save($product)) {
+                $this->Flash->success(__('The product has been saved.'));
+                return $this->redirect(['action' => '']);
+            }
+            $this->Flash->error(__('The product could not be saved. Please, try again.'));
+        }
+
+
+        $categories = $this->Categories->find('all')->all(); 
+        $this->set(compact('categories')); 
+        $this->set('_serialize', ['categories']);
+
+
+    } 
      
     
 } 
-

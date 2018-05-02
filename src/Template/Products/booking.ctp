@@ -136,6 +136,7 @@ $times = create_time_range('0:00', '24:00');
 
                                             <label>Total Price <span class="not-desc"><p id="totalamount">$0</p></span></label>
                                             <input type="hidden" name="total_price"/>
+
                                           
                                             <!-- <label>Weekly Discount Applied <span>15%</span></label> -->
                                         </div>
@@ -176,8 +177,9 @@ $times = create_time_range('0:00', '24:00');
             </div>
             <div class="clr"></div>
         </section><!-- End Here Description Section -->
-        <section class="map-sec">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3429.679547866961!2d76.84327431473727!3d30.727407981639068!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f92df701b13cb%3A0xc502e2bb22b11323!2sOffice+Space+for+Rent+in+IT+Park%2C+Chandigarh!5e0!3m2!1sen!2sin!4v1521109477249" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+         <section class="map-sec">
+            <div id="map" style="width:100%;height:500px;background:#498ebe" class="mp"></div>
+        
         </section><!-- End HEre Map Section-->
         <div class="clr"></div>
     </section><!-- Content Section End Here -->
@@ -218,8 +220,36 @@ $times = create_time_range('0:00', '24:00');
     </div>
     <!-- Login Modal HTML End Here -->
 
+<script>
 
+       /*** Google Map ***/
+$(document).ready(function() {   
+var lat = $.parseJSON('<?php echo json_encode($watercraft['lat']) ?>');  
+var long = $.parseJSON('<?php echo json_encode($watercraft['long']) ?>');  
+var alllocations = [];
+var i;  
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 13,
+    center: new google.maps.LatLng(lat, long),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+  var infowindow = new google.maps.InfoWindow();
+  var marker, i;
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(lat, long),
+      map: map
+    });
+    google.maps.event.addListener(marker, 'click', (function(marker, i) {
+      return function() {
+       // infowindow.setContent(lat);
+       // infowindow.open(map, marker);
+      }
+    })(marker, i));
+  });
+  
+/*** Google Map (END) ***/  
 
+    </script>
 
     <script>   
     function calculateTime() {
@@ -370,3 +400,5 @@ jQuery("#Favourites").click(function(event) {
    
 
     </script>
+  
+    

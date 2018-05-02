@@ -378,7 +378,7 @@ class UsersController extends AppController {
     /************************My product********************************/ 
     public function myproduct(){    
       if($this->Auth->user('id')){  
-        $userdata  = $this->Users->find('all',array('contain'=>['Products'],'conditions'=>array('Users.id'=>$this->Auth->user('id'))));
+        $userdata  = $this->Users->find('all',array('contain'=>['Products' =>  ['Categories']],'conditions'=>array('Users.id'=>$this->Auth->user('id'))));
         $userdata  = $userdata->first();  
           
         }else {

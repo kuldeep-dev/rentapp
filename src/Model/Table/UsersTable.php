@@ -75,8 +75,15 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
 		
 		$this->hasMany('Products')
-            ->setForeignKey('user_id')  
-            ->setDependent(true);  
+            ->setForeignKey('user_id') 
+            ->setDependent(true)
+            ->sort(['Products.id' => 'DESC']);  
+
+        //   $this->hasMany('Products', [ 
+        //     'className' => 'Products',
+        //     'foreignKey' => 'user_id',
+        //     'sort' => 'id DESC',
+        // ]);  
 //			
 //		$this->hasMany('Reviews')
 //            ->setForeignKey('trainer_id')

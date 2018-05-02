@@ -390,3 +390,48 @@ Stack trace:
 [18-Apr-2018 13:13:46 UTC] PHP Parse error:  syntax error, unexpected '=', expecting ']' in /home/singhgurpreet/public_html/rentapp/src/Controller/FavouritesController.php on line 143
 [20-Apr-2018 05:02:01 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement in the script in /home/singhgurpreet/public_html/rentapp/src/Controller/AppController.php on line 32
 [20-Apr-2018 05:02:03 UTC] PHP Fatal error:  Namespace declaration statement has to be the very first statement in the script in /home/singhgurpreet/public_html/rentapp/src/Controller/AppController.php on line 32
+[27-Apr-2018 07:42:15 UTC] PHP Parse error:  syntax error, unexpected ';' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 279
+[27-Apr-2018 10:29:06 UTC] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 264
+[27-Apr-2018 10:47:42 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Template/Products/search.ctp on line 175
+[01-May-2018 09:38:09 UTC] PHP Parse error:  syntax error, unexpected ''label label-block label-dange' (T_ENCAPSED_AND_WHITESPACE) in /home/gurpreet/public_html/rentapp/src/Template/Layout/default.ctp on line 414
+[01-May-2018 09:47:01 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting function (T_FUNCTION) in /home/gurpreet/public_html/rentapp/src/Controller/StaticpagesController.php on line 132
+[01-May-2018 10:34:35 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 140
+[01-May-2018 10:34:35 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 140
+[01-May-2018 12:55:23 UTC] PHP Fatal error:  Call to a member function isNew() on null in /home/gurpreet/public_html/rentapp/vendor/cakephp/cakephp/src/ORM/Marshaller.php on line 532
+[01-May-2018 13:02:35 UTC] PHP Fatal error:  Call to a member function isNew() on null in /home/gurpreet/public_html/rentapp/vendor/cakephp/cakephp/src/ORM/Marshaller.php on line 532
+[01-May-2018 13:07:05 UTC] PHP Fatal error:  Call to a member function isNew() on null in /home/gurpreet/public_html/rentapp/vendor/cakephp/cakephp/src/ORM/Marshaller.php on line 532
+[02-May-2018 05:01:03 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:03 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:03 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:04 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 549
+[02-May-2018 05:01:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 549
+[02-May-2018 05:01:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 549
+[02-May-2018 05:01:07 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 549
+[02-May-2018 05:01:10 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:10 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:10 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:10 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:01:37 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 737
+[02-May-2018 05:02:15 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 738
+[02-May-2018 05:02:17 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 738
+[02-May-2018 05:02:22 UTC] PHP Parse error:  syntax error, unexpected '}' in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 738
+[02-May-2018 06:25:52 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 263
+[02-May-2018 06:32:15 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/ProductsController.php on line 263
+[02-May-2018 07:44:28 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Products/booking.ctp on line 226
+[02-May-2018 07:44:31 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Products/booking.ctp on line 226
+[02-May-2018 09:56:51 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Orders/upcoming.ctp on line 58
+[02-May-2018 09:56:53 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Orders/upcoming.ctp on line 58
+[02-May-2018 10:07:03 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/gurpreet/public_html/rentapp/src/Template/Orders/upcoming.ctp on line 60
+[02-May-2018 10:08:58 UTC] PHP Parse error:  syntax error, unexpected '<' in /home/gurpreet/public_html/rentapp/src/Template/Orders/upcoming.ctp on line 58
+[02-May-2018 10:14:18 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Orders/upcoming.ctp on line 65
+[02-May-2018 10:53:05 UTC] PHP Parse error:  syntax error, unexpected '$order' (T_VARIABLE), expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Orders/orderhistory.ctp on line 32
+[02-May-2018 12:01:51 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/UsersController.php on line 152
+[02-May-2018 12:19:16 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/gurpreet/public_html/rentapp/src/Template/Users/myproduct.ctp on line 51
+[02-May-2018 12:19:42 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Users/myproduct.ctp on line 51
+[02-May-2018 12:19:43 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Users/myproduct.ctp on line 51
+[02-May-2018 12:19:58 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Users/myproduct.ctp on line 51
+[02-May-2018 12:20:00 UTC] PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /home/gurpreet/public_html/rentapp/src/Template/Users/myproduct.ctp on line 51
+[02-May-2018 12:29:11 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Controller/UsersController.php on line 152
+[02-May-2018 12:45:42 UTC] PHP Parse error:  syntax error, unexpected '=>' (T_DOUBLE_ARROW) in /home/gurpreet/public_html/rentapp/src/Model/Table/UsersTable.php on line 80
+[02-May-2018 13:11:25 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/gurpreet/public_html/rentapp/src/Template/Products/booking.ctp on line 156

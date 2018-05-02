@@ -1,81 +1,68 @@
-<div class="chk_section">
-    <div class="container">
-     <?= $this->Flash->render() ?>  
-        <div class="row">
-            <div class="my_thm">
-                <div class="my_hder">
-                    <h3>My Products</h3>   
-                </div>
-
-                <!-----pro-table-------->               
-                <div class="table_prodct">
-				
-                    <?php if(!empty($userdata['products'])){ ?>
-					
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Title</th>
-                                <th scope="col">QTY</th>
-                                <th scope="col">Price</th>
-                                <th scope="col" class="actions"><?= __('Actions') ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if(!empty($userdata)){
-                                
-                             foreach($userdata['products'] as $product){    
-                            ?>
-                            <tr>
-                                <td data-label="Title" class="ttl_pnh">
-                                    <div class="mypr_pic">
-                                        <?php if($product['image']){ ?>  
+<section class="st_content">
+        <section class="trip-sec list-craft-sh">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="inner-sec">
+                            <div class="head-sec">
+                                <h2>List Crafts</h2>
+                            </div>
+                            <div class="trip-list">
+                                <ul>
+                                 <?php if(!empty($userdata['products'])){
+                        foreach($userdata['products'] as $product){
+                        ?>
+                                    <li>
+                                        <span class="img-crafting">
+                                            <?php if($product['image']){ ?>  
                                         <img src="<?php echo $this->request->webroot."images/products/".$product['image']; ?>">
                                          <?php }else{ ?> 
                                         <img src="<?php echo $this->request->webroot."images/products/no-image.jpg"; ?>">
                                          <?php } ?> 
-                                    </div>
-                                    <div class="mypr_txt">
-                                        <?php  
+                                        </span>
+                                        <h5><?php echo $product['name'];?></h5>
+                                        <p><?php  
                                         $string = strip_tags($product['description']);
                                         if (strlen($string) > 30) {
                                             $stringCut = substr($string, 0, 30);
                                             $string = substr($stringCut, 0, strrpos($stringCut, ' ')).'...'; 
                                         }
-                                        ?>
-                                        <h4><?php if(isset($product['name'])){ echo $product['name']; } ?></h4>
-                                        <p><?php if(isset($string)){ echo $string; } ?></p> 
-                                    </div>
-
-
-
-                                </td>
-                                <td data-label="QTY"><?php if(isset($product['quantity'])){ echo $product['quantity']; } ?></td>
-                                <td data-label="Price">$<?php if(isset($product['price'])){ echo $product['price']; } ?></td>
-                                <td class="actions">
-                                    <?= $this->Html->link(
-                                         'View<span class="sr-only">' . __('View') . '</span>',
-                                         ['controller'=>'products','action' => 'view', $product->slug],
-                                         ['escape' => false, 'title' => __('View'), 'class' => 'btn btn-info btn-xs']
-                                     ) ?>  
-                                     <?= $this->Html->link(
-                                         'Edit<span class="sr-only">' . __('Edit') . '</span>',
-                                         ['controller'=>'products','action' => 'edit', $product->id],
-                                         ['escape' => false, 'title' => __('Edit'), 'class' => 'btn btn-success btn-xs']
-                                     ) ?>
-
-
-                                     <?= $this->Form->postLink(__('Delete'), ['controller'=>'products','action' => 'delete', $product->id], ['confirm' => __('Are you sure you want to delete # {0}?', $product->id),'class' => 'btn btn-danger btn-xs']) ?>
-                                 </td>
-                            </tr>
-                            <?php } } ?>      
-                        </tbody>  
-                    </table> 
-					
-                    <?php  }else{ echo '<div class="col-sm-12"><div class="blankimg"><img src="'.$this->request->webroot.'/img/no_product_5.png" class="img-responsive"></div></div>'; }  ?>  
-					
+                                        ?><?php if(isset($string)){ echo $string; } ?></p>
+                                        <ul class="details">
+                                            <li>
+                                                <label>Location:</label> <?php echo $product['city'];?>
+                                            </li>
+                                            <li>
+                                                <label>Category:</label> <?php echo $product['category']['name'];?>
+                                            </li>
+                                            <li>
+                                                <label>Color:</label> <?php echo $product['color'];?>
+                                            </li>
+                                            <li>
+                                                <label>Price:</label> $<?php echo $product['price'];?>
+                                            </li>
+                                            <li>
+                                                <label>Pick Location:</label> <?php echo $product['pick_location'];?>
+                                            </li>
+                                            <li>
+                                                <label>Drop Location:</label> <?php echo $product['drop_location'];?>
+                                            </li>
+                                            <li>
+                                                <label>Status:</label> <?php if ($product['status'] == 1) { echo "Active";} else { echo "Deactive";} ?>
+                                            </li>
+                                            <li>
+                                               <!--  <a href="#">Edit Details</a> -->
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <?php } } ?>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <div class="clr"></div>
+        </section><!-- Contact Section End Here -->
+    </section><!-- Content Section End Here -->
