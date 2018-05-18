@@ -1,6 +1,7 @@
 <section class="content-header">
     <h1>
-    Static Pages  <?= $this->Html->link(__('Add Static Page'), ['action' => 'add'], ['class' => 'btn btn-warning']) ?>
+    Static Pages  
+    <!-- <?= $this->Html->link(__('Add Static Page'), ['action' => 'add'], ['class' => 'btn btn-warning']) ?> -->
     <small></small>
     </h1>
     <ol class="breadcrumb">
@@ -61,7 +62,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Title</th>
-                  <th>Image</th>
+                  <!-- <th>Image</th> -->
                   <th>Actions</th>
                 </tr>
                 </tfoot>

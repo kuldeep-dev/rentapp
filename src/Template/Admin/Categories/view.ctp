@@ -3,10 +3,7 @@
     <?= __('Category') ?>
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i><?= __('Home') ?> </a></li>
-        <li class="active"><?= __('View') ?></li>
-    </ol>
+    
 </section>
 
 <section class="content">
@@ -28,21 +25,21 @@
             <td><?= h($category->name) ?></td>
         </tr>
         
-        <tr>
+       <!--  <tr>
             <th scope="row"><?= __('Description') ?></th>
             <td><?= h(strip_tags($category->description)) ?></td>
-        </tr>
+        </tr> -->
 
-        <tr>
+       <!--  <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?=  $this->Number->format($category->id) ?></td>
-        </tr>
+        </tr> -->
   
         <tr>
             <th scope="row"><?= __('Created') ?></th>
             <td><?= h($category->created) ?></td>
         </tr>
-        <tr>
+       <!--  <tr>
           <th><?= __('Image') ?></th>
           <td>
             <?php if($category->image != ''){ ?>
@@ -53,7 +50,7 @@
             " class="previewHolder"/>
             <?php } ?>
           </td>
-        </tr>
+        </tr> -->
    
       </tbody>
     </table>

@@ -48,9 +48,9 @@ class OrdersTable extends Table
             'foreignKey' => 'seller_id'
         ]);    
 
-        $this->hasMany('OrderItems', [  
-            'foreignKey' => 'order_id'  
-        ]);
+        // $this->hasMany('OrderItems', [  
+        //     'foreignKey' => 'order_id'  
+        // ]);
          $this->belongsTo('Products', [      
             'foreignKey' => 'product_id'
         ]); 

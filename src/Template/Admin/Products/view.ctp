@@ -8,7 +8,6 @@
         <li class="active">View</li>
     </ol>
 </section>
-
 <section class="content">
 	<div class="row">
         <div class="col-xs-12">
@@ -50,12 +49,41 @@
             <th scope="row"><?= __('Price') ?></th> 
             <td><?= h($product->price) ?></td>
         </tr>
-          <?php if(!empty($product->delivery_details)){ ?> 
+          <?php  if(!empty($product->delivery_details)){ ?> 
+        <!-- <tr>
+            <th scope="row"><?//= __('Delivery Details') ?></th>
+            <td><?//= h($product->delivery_details) ?></td>  
+        </tr> -->
+       <?php } ?>
+
+        <?php if(!empty($product->desc)){ ?> 
         <tr>
-            <th scope="row"><?= __('Delivery Details') ?></th>
-            <td><?= h($product->delivery_details) ?></td>  
+            <th scope="row"><?= __('Description') ?></th>
+            <td><?= h($product->desc) ?></td>
         </tr>
        <?php } ?>
+
+       <?php if(!empty($product->color)){ ?> 
+        <tr>
+            <th scope="row"><?= __('Color') ?></th>
+            <td><?= h($product->color) ?></td>
+        </tr>
+       <?php } ?>
+
+       <?php if(!empty($product->pick_location)){ ?> 
+        <tr>
+            <th scope="row"><?= __('Pick Location') ?></th> 
+            <td><?= h($product->pick_location) ?></td>
+        </tr>
+       <?php } ?>
+
+       <?php if(!empty($product->drop_location)){ ?> 
+        <tr>
+            <th scope="row"><?= __('Drop Location') ?></th>
+            <td><?= h($product->drop_location) ?></td>
+        </tr>
+       <?php } ?>
+
         
        <?php if(!empty($product->conditions)){ ?> 
         <tr>

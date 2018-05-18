@@ -3,10 +3,7 @@
     Users
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Change Password</li>
-    </ol>
+     
 </section>
 
 <section class="content">
@@ -37,8 +34,24 @@
 </section> 
 
 <script>
+
 $().ready(function() {
-	$("#user-form").validate();
+	var form = $("#user-form").validate({
+		rules: {
+			password: { 
+				required: true,
+				minlength: 8
+			}
+		},
+		messages: {
+			password: "Password must be atleast 8 character long"	
+		}
+	});
 });
+
+// $().ready(function() {
+// 	$("#user-form").validate();
+// });
+
 
 </script>      

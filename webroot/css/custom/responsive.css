@@ -1,0 +1,71 @@
+@media (min-width:992px) and (max-width:1024px) {
+
+}
+@media (min-width:768px) and (max-width:991px) {
+
+}
+@media screen and (max-width:767px){
+.st_banner .caption h2 {
+    font-size: 30px;
+}
+.st_banner .caption p {
+    font-size: 23px;
+}
+.st_banner .caption p strong {
+    font-size: 30px;
+}
+.head-sec-cr {
+    height: 80px;
+    width: 275px;
+}
+.head-sec-cr {
+    height: 90px;
+    width: 270px;
+}
+.head-sec-cr h2 {
+    font-size: 15px;
+}
+.gray-sec .content-sec a.btn-default {
+    width: 260px;
+    margin-bottom: 15px;
+    padding: 0px;
+    font-size: 15px;
+}
+.gray-sec .content-sec p {
+    font-size: 16px;
+    line-height: 20px;
+}
+.testimonial_sec {
+    padding: 60px 0px; 
+}
+.trip-sec.list-craft-sh .trip-list ul li {
+    flex: 0 0 100%;
+    max-width: 100%;
+    float: none;
+}
+.trip-sec .trip-list ul li {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding-left: 125px;
+}
+.trip-sec .trip-list ul li span {
+    height: 100px;
+    width: 100px;
+}
+.jet_sec .jet-slider .inner-content .img-sec {
+    width: 100%;
+}
+.st_banner .caption .sr-form {
+    margin-top: -20px;
+}
+.gray-sec .content-sec h2 {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+}
+@media (min-width:500px) and (max-width:767px) {
+
+}
+@media screen and (max-width:480px){
+	
+}

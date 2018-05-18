@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 26, 2018 at 10:30 AM
--- Server version: 5.6.35
+-- Generation Time: May 18, 2018 at 09:47 AM
+-- Server version: 5.6.38
 -- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -19,6 +21,16 @@ SET time_zone = "+00:00";
 --
 -- Database: `gurpreet_rentapp`
 --
+
+DELIMITER $$
+--
+-- Functions
+--
+CREATE DEFINER=`gurpreet`@`localhost` FUNCTION `get_distance_in_miles_between_geo_locations` (`geo1_latitude` DECIMAL(10,6), `geo1_longitude` DECIMAL(10,6), `geo2_latitude` DECIMAL(10,6), `geo2_longitude` DECIMAL(10,6)) RETURNS DECIMAL(10,3) BEGIN
+return ((ACOS(SIN(geo1_latitude * PI() / 180) * SIN(geo2_latitude * PI() / 180) + COS(geo1_latitude * PI() / 180) * COS(geo2_latitude * PI() / 180) * COS((geo1_longitude - geo2_longitude) * PI() / 180)) * 180 / PI()) * 60 * 1.1515);
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -44,7 +56,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `parent_id`, `lft`, `rght`, `name`, `description`, `slug`, `image`, `status`, `created`) VALUES
-(1, 0, 1, 2, 'Boats', '<p>boats</p>', 'boats', 'boats.png', 1, '2018-04-09 06:21:45'),
+(1, 0, 1, 2, 'Boats', 'Boats', 'boats', 'boats.png', 1, '2018-04-09 06:21:45'),
 (10, 0, 3, 4, 'Jet Ski', '<p>jet ski</p>', 'jet_ski', 'jet-ski.png', 1, '2018-04-09 06:25:39'),
 (11, 0, 5, 6, 'Commercial Fishing Boats', '<p>Commercial Fishing Boats</p>', 'commercial_fishing_boats', 'fishing.png', 1, '2018-04-09 06:26:17'),
 (12, 0, 7, 8, 'Yachts', '<p>yachts</p>', 'yachts', 'fsboats.png', 1, '2018-04-09 06:27:12'),
@@ -84,7 +96,8 @@ INSERT INTO `contacts` (`id`, `name`, `email`, `phone`, `subject`, `message`, `s
 (13, 'sadfsadf', 'asdf@sd.df', '12321312', 'dsfaf', 'sdafasdfasdf', 0, '2018-04-10 12:26:20'),
 (14, 'dfgsdfg', 'rupak@avainfotech.com', '2342342', 'dfsgdsfg', 'dsfgsdfg', 0, '2018-04-10 12:29:37'),
 (15, 'prateek', 'prateek@avainfotech.com', '5585858585858585858', 'jghjghg', 'ghghghghkhjkkkkkkkkkkkkkk', 0, '2018-04-16 10:07:00'),
-(16, 'PRATEEK', 'prateek@avainfotech.com', '545454', '44454254', 'hjhfjhgjhgfghfnjh', 0, '2018-04-19 07:40:48');
+(16, 'PRATEEK', 'prateek@avainfotech.com', '545454', '44454254', 'hjhfjhgjhgfghfnjh', 0, '2018-04-19 07:40:48'),
+(17, 'PRATEEK', 'prateek@avainfotech.com', '858585858', 'FRIEND', 'WHEN WILL I GET MY RAFT FOR RENT?', 0, '2018-05-04 07:51:22');
 
 -- --------------------------------------------------------
 
@@ -388,7 +401,55 @@ INSERT INTO `favourites` (`id`, `product_id`, `user_id`, `created`) VALUES
 (9, 50, 27, '2018-04-20 06:25:45'),
 (10, 41, 27, '2018-04-20 06:26:00'),
 (11, 40, 27, '2018-04-20 09:25:42'),
-(12, 39, 25, '2018-04-23 04:30:05');
+(12, 39, 25, '2018-04-23 04:30:05'),
+(13, 51, 25, '2018-05-01 07:55:11'),
+(14, 47, 27, '2018-05-03 05:45:57'),
+(15, 66, 27, '2018-05-03 06:10:37'),
+(16, 49, 27, '2018-05-03 06:45:19'),
+(17, 45, 27, '2018-05-03 06:55:24'),
+(18, 69, 27, '2018-05-03 07:14:21'),
+(19, 54, 27, '2018-05-03 07:37:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `galleries`
+--
+
+CREATE TABLE `galleries` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `image` varchar(500) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `galleries`
+--
+
+INSERT INTO `galleries` (`id`, `product_id`, `image`, `created`, `modified`) VALUES
+(104, 45, '130500booking-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(100, 72, '073744Desert.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(106, 72, '131408image003.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(98, 0, '073329tpbanner-mobicon1.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(97, 44, '072402trust-and-safety-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(95, 0, '072206tpbanner-mobicon2.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(94, 0, '072035icon-app.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(93, 0, '071945icon-app.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(92, 0, '071402', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(91, 0, '071156icon-app.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(90, 0, '071002icon-app.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(89, 0, '070633', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(88, 0, '070356icon-app.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(87, 0, '070331tpbanner-mobicon1.png', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(84, 72, '042749e3.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(83, 73, '124301booking-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(82, 73, '124301list-your-craft-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(81, 73, '124301Rent-a-Craft-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(80, 73, '124301trust-and-safety-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(67, 74, '110244booking-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(66, 74, '105348Rent-a-Craft-banner.jpg', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -427,7 +488,25 @@ INSERT INTO `orders` (`id`, `uid`, `product_id`, `start_date`, `start_time`, `en
 (24, 27, 43, '19-04-2018', '1:00:00 PM', '26-04-2018', '3:00:00 PM', '300.00', 170, '51000.00', '2018-04-19 06:12:26', '2018-04-19 06:12:26', NULL, NULL, 1),
 (25, 27, 47, '20-04-2018', '4:00:00 PM', '26-04-2018', '5:00:00 PM', '23.00', 145, '3335.00', '2018-04-19 10:46:54', '2018-04-19 10:46:54', NULL, NULL, 1),
 (26, 27, 40, '24-04-2018', '3:00:00 PM', '24-04-2018', '4:00:00 PM', '100.00', 1, '100.00', '2018-04-20 09:32:42', '2018-04-20 09:32:42', 'Pending', '98L51732AS501480V', 3),
-(27, 25, 47, '26-04-2018', '2:00:00 AM', '26-04-2018', '4:00:00 AM', '23.00', 2, '46.00', '2018-04-23 05:11:36', '2018-04-23 05:11:36', 'Pending', '0VT6946947342943P', 3);
+(27, 25, 47, '26-04-2018', '2:00:00 AM', '26-04-2018', '4:00:00 AM', '23.00', 2, '46.00', '2018-04-23 05:11:36', '2018-04-23 05:11:36', 'Pending', '0VT6946947342943P', 3),
+(28, 27, 45, '01-05-2018', '1:00:00 PM', '01-05-2018', '2:00:00 PM', '25.00', 1, '25.00', '2018-04-30 06:12:52', '2018-04-30 06:12:52', NULL, NULL, 1),
+(29, 25, 47, '30-04-2018', '4:00:00 AM', '30-04-2018', '5:00:00 AM', '23.00', 1, '23.00', '2018-04-30 09:58:35', '2018-04-30 09:58:35', NULL, NULL, 1),
+(30, 27, 42, '30-04-2018', '10:00:00 AM', '30-04-2018', '11:00:00 AM', '500.00', 1, '500.00', '2018-04-30 10:01:44', '2018-04-30 10:01:44', NULL, NULL, 1),
+(31, 25, 46, '30-04-2018', '3:00:00 AM', '30-04-2018', '5:00:00 AM', '55.00', 2, '110.00', '2018-04-30 10:06:02', '2018-04-30 10:06:02', NULL, NULL, 1),
+(32, 25, 46, '30-04-2018', '9:00:00 AM', '30-04-2018', '10:00:00 AM', '55.00', 1, '55.00', '2018-04-30 10:10:05', '2018-04-30 10:10:05', 'Pending', '3KR658297W540383N', 3),
+(33, 27, 39, '30-04-2018', '6:00:00 PM', '30-04-2018', '7:00:00 PM', '200.00', 1, '200.00', '2018-04-30 12:47:18', '2018-04-30 12:47:18', 'Pending', '1EF76594N45008149', 3),
+(34, 27, 44, '11-05-2018', '12:00:00 PM', '11-05-2018', '2:00:00 PM', '600.00', 2, '1200.00', '2018-05-03 04:28:04', '2018-05-03 04:28:04', NULL, NULL, 1),
+(35, 27, 47, '11-05-2018', '5:00:00 PM', '11-05-2018', '6:00:00 PM', '23.00', 1, '23.00', '2018-05-03 04:30:52', '2018-05-03 04:30:52', 'Pending', '88R8877857636700J', 3),
+(36, 27, 48, '03-05-2018', '5:00:00 PM', '29-05-2018', '5:00:00 PM', '34.00', 624, '21216.00', '2018-05-03 12:59:32', '2018-05-03 12:59:32', NULL, NULL, 1),
+(37, 27, 39, '04-05-2018', '1:00:00 PM', '04-05-2018', '2:00:00 PM', '200.00', 1, '200.00', '2018-05-04 05:10:40', '2018-05-04 05:10:40', 'Pending', '6T848458KD5036847', 3),
+(38, 27, 40, '28-05-2018', '5:00:00 PM', '28-05-2018', '6:00:00 PM', '100.00', 1, '100.00', '2018-05-04 08:59:56', '2018-05-04 08:59:56', NULL, NULL, 1),
+(39, 1, 47, '15-05-2018', '5:00:00 AM', '16-05-2018', '12:00:00 PM', '23.00', 31, '500.00', '2018-05-15 05:47:20', '2018-05-15 05:47:20', NULL, NULL, 1),
+(40, 27, 47, '15-05-2018', '6:00:00 AM', '15-05-2018', '8:00:00 AM', '23.00', 2, '46.00', '2018-05-15 07:55:31', '2018-05-15 07:55:31', 'Pending', '0FF22717B3703920Y', 3),
+(41, 25, 74, '16-05-2018', '2:00:00 PM', '16-05-2018', '3:00:00 PM', '20.00', 1, '20.00', '2018-05-16 06:45:34', '2018-05-16 06:45:34', 'Pending', '3ES909014R151932H', 3),
+(42, 25, 48, '16-05-2018', '4:00:00 PM', '16-05-2018', '5:00:00 PM', '34.00', 1, '34.00', '2018-05-16 09:24:51', '2018-05-16 09:24:51', 'Pending', '877144863T838964N', 3),
+(43, 25, 53, '16-05-2018', '12:00:00 PM', '16-05-2018', '1:00:00 PM', '500.00', 1, '500.00', '2018-05-16 12:11:45', '2018-05-16 12:11:45', 'Pending', '7N407022KN7836600', 3),
+(44, 25, 53, '16-05-2018', '12:00:00 PM', '16-05-2018', '1:00:00 PM', '500.00', 1, '500.00', '2018-05-16 12:14:21', '2018-05-16 12:14:21', NULL, NULL, 1),
+(45, 1, 39, '17-05-2018', '4:00:00 AM', '17-05-2018', '7:00:00 AM', '200.00', 3, '600.00', '2018-05-17 07:39:11', '2018-05-17 07:39:11', 'Pending', '51A78429Y5488143T', 3);
 
 -- --------------------------------------------------------
 
@@ -448,7 +527,7 @@ CREATE TABLE `products` (
   `ava_rating` int(11) NOT NULL DEFAULT '0',
   `cat_id` int(11) NOT NULL DEFAULT '0',
   `image` varchar(1000) DEFAULT NULL,
-  `delivery_details` varchar(500) DEFAULT NULL,
+  `city` varchar(500) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT '1',
   `pick_location` varchar(350) DEFAULT NULL,
   `drop_location` varchar(350) DEFAULT NULL,
@@ -462,24 +541,38 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `user_id`, `slug`, `name`, `description`, `color`, `trips`, `price`, `conditions`, `ava_rating`, `cat_id`, `image`, `delivery_details`, `status`, `pick_location`, `drop_location`, `lat`, `long`, `created`, `expired`) VALUES
-(39, 1, 'new_jet_ski', 'new jet ski', '<p>new jet ski</p>', NULL, 1, '200.00', 'New', 2, 10, '1523260929jet-ski-one.jpg', 'check', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 08:02:09', NULL),
-(40, 1, 'test', 'test', '<p>sdfasdfsdf</p>', NULL, 1, '100.00', 'Old', 0, 10, '1523263110jet-ski-three.jpg', 'asdfsd', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 08:38:30', NULL),
-(41, 1, 'test_34', 'test 34', '<p>adsfdsafa</p>', NULL, 3, '50.00', 'Old', 0, 10, '1523263171jet-ski-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 08:39:31', NULL),
-(42, 1, 'boat_12', 'Boat 12', '<p>asdfsadfsdf</p>', NULL, 4, '500.00', 'New', 0, 1, '1523263214boats-three.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 08:40:14', NULL),
-(43, 1, 'boat_new', 'Boat new', '<p>asdfasdf</p>', NULL, 1, '300.00', 'Old', 4, 1, '1523263257boats-one.jpg', '', 1, 'chandigarh', 'chandigarh', '30.7333148', '76.7794179', '2018-04-09 08:40:57', NULL),
-(44, 1, 'boat_test', 'Boat test', '<p>dfssdfgdfgds</p>', NULL, 2, '600.00', 'New', 0, 1, '1523263304boats-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 08:41:44', NULL),
-(45, 1, 'ski_new2', 'ski new2', '<p>dsafasdf</p>', NULL, 0, '25.00', 'New', 0, 10, '1523270412jet-ski-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:40:12', NULL),
-(46, 23, 'water_12', 'water 12', '', NULL, 0, '55.00', 'New', 0, 13, '1523270584watersp-one.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:43:04', NULL),
-(47, 22, 'water_new', 'water new', '', NULL, 0, '23.00', 'New', 0, 13, '1523270666watersp-three.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:44:26', NULL),
-(48, 23, 'water_sport_22', 'water sport 22', '', NULL, 0, '34.00', 'New', 0, 13, '1523270957watersp-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:49:17', NULL),
-(49, 23, 'yachts23', 'Yachts23', '', NULL, 0, '56.00', 'New', 0, 12, '1523271023yacht-one.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:50:23', NULL),
-(50, 25, 'yachts_new', 'Yachts new', '', NULL, 0, '67.00', 'Old', 0, 12, '1523271072yacht-three.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:51:12', NULL),
-(51, 22, 'yachts_test', 'Yachts test', '', NULL, 0, '78.00', 'New', 0, 12, '1523271115yacht-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:51:55', NULL),
-(52, 22, 'fishing_boats_12', 'Fishing boats 12', '', NULL, 0, '200.00', 'New', 0, 11, '1523271231fsboats-one.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:53:51', NULL),
-(53, 25, 'fishing_boats_new', 'Fishing boats new', '', NULL, 0, '500.00', 'New', 0, 11, '1523271268fsboats-three.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:54:28', NULL),
-(54, 25, 'fishing_boats_test', 'Fishing boats test', '', NULL, 0, '249.99', 'New', 0, 1, '1523271343fsboats-two.jpg', '', 1, NULL, NULL, '30.7333148', '76.7794179', '2018-04-09 10:55:43', NULL),
-(55, 25, 'fishing_boats_45', 'Fishing boats 45', '', NULL, 0, '149.99', 'New', 0, 11, '1523271548fsboats-two.jpg', '', 1, NULL, NULL, '30.7270', '76.8456', '2018-04-09 10:59:08', NULL);
+INSERT INTO `products` (`id`, `user_id`, `slug`, `name`, `description`, `color`, `trips`, `price`, `conditions`, `ava_rating`, `cat_id`, `image`, `city`, `status`, `pick_location`, `drop_location`, `lat`, `long`, `created`, `expired`) VALUES
+(39, 1, 'new_jet_ski', 'new jet ski', '<p>new jet ski</p>', 'red', 1, '200.00', 'New', 2, 10, '1523260929jet-ski-one.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 08:02:09', NULL),
+(40, 1, 'test', 'test', '<p>sdfasdfsdf</p>', 'red', 1, '100.00', 'Old', 0, 10, '1523263110jet-ski-three.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 08:38:30', NULL),
+(41, 1, 'test_34', 'test 34', '<p>adsfdsafa</p>', 'black', 3, '50.00', 'Old', 0, 10, '1523263171jet-ski-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 08:39:31', NULL),
+(42, 1, 'boat_12', 'Boat 12', '<p>asdfsadfsdf</p>', 'black', 4, '500.00', 'New', 0, 1, '1523263214boats-three.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 08:40:14', NULL),
+(43, 1, 'boat_new', 'Boat new', '<p>asdfasdf</p>', 'red', 1, '300.00', 'Old', 4, 1, '1523263257boats-one.jpg', 'Chandigarh', 1, 'chandigarh', 'chandigarh', '30.7333148', '76.7794179', '2018-04-09 08:40:57', NULL),
+(44, 1, 'boat_test', 'Boat test', '<p>dfssdfgdfgds</p>', 'yellow', 2, '600.00', 'New', 0, 1, '1523263304boats-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 08:41:44', NULL),
+(45, 1, 'ski_new2', 'ski new22', '<p>dsafasdf update</p>', 'red', 0, '35.00', 'Old', 0, 11, '1526379823jet-ski-three.jpg', 'Chandigarh', 1, 'Sector 8, Chandigarh, India', 'Sector 8, Chandigarh, India', '30.7447588', '76.8105577', '2018-04-09 10:40:12', NULL),
+(46, 23, 'water_12', 'water 12', '<p>test product</p>', 'yellow', 0, '55.00', 'New', 5, 13, '1523270584watersp-one.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:43:04', NULL),
+(47, 22, 'water_new', 'water new', '<p>test product</p>', 'red', 0, '23.00', 'New', 3, 13, '1523270666watersp-three.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:44:26', NULL),
+(48, 23, 'water_sport_22', 'water sport 22', '<p>test product</p>', 'black', 0, '34.00', 'New', 0, 13, '1523270957watersp-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:49:17', NULL),
+(49, 23, 'yachts23', 'Yachts23', '<p>test product</p>', 'yellow', 0, '56.00', 'New', 0, 12, '1523271023yacht-one.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:50:23', NULL),
+(50, 25, 'yachts_new', 'Yachts new', '<p>test product</p>', 'blue', 0, '67.00', 'Old', 0, 12, '1523271072yacht-three.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:51:12', NULL),
+(51, 22, 'yachts_test', 'Yachts test', '<p>test product</p>', 'blue', 0, '78.00', 'New', 0, 12, '1523271115yacht-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:51:55', NULL),
+(52, 22, 'fishing_boats_12', 'Fishing boats 12', '<p>test product</p>', 'white', 0, '200.00', 'New', 0, 11, '1523271231fsboats-one.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:53:51', NULL),
+(53, 25, 'fishing_boats_new', 'Fishing boats new', '<p>test product</p>', 'white', 0, '500.00', 'New', 0, 11, '1523271268fsboats-three.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:54:28', NULL),
+(54, 25, 'fishing_boats_test', 'Fishing boats test', '<p>test product</p>', 'white', 0, '249.99', 'New', 0, 1, '1523271343fsboats-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-04-09 10:55:43', NULL),
+(55, 25, 'fishing_boats_45', 'Fishing boats 45', '<p>test product</p>', 'white', 0, '149.99', 'New', 0, 11, '1523271548fsboats-two.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7270', '76.8456', '2018-04-09 10:59:08', NULL),
+(64, 25, 'new-ski', 'new ski', '<p>test product</p>', 'blue', 0, '20.00', 'New', 0, 13, '1525243086watersp-three.jpg', 'Delhi', 1, 'Delhi, India', 'Delhi, India', '28.68627380000001', '77.22178310000004', '2018-05-02 06:38:06', NULL),
+(65, 27, 'prateek', 'PRATEEK', '<p>gbnfvjnfknfkjnkfjhfhfh</p>', 'red', 0, '500.00', 'New', 0, 10, '1525250123Jellyfish.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-05-02 08:35:23', NULL),
+(66, 25, 'test-boat', 'test boat', '<p>test boat</p>', 'black', 0, '200.00', 'New', 0, 1, '1523271231fsboats-one.jpg', 'Sahibzada Ajit Singh Nagar', 1, 'Mohali, Punjab, India', 'Mohali, Punjab, India', '30.7046486', '76.71787259999996', '2018-05-02 09:38:11', NULL),
+(67, 27, 'mclaren', 'mclaren', '<p>best in class</p>', 'red', 0, '300.00', 'New', 0, 1, '1525323808luxury-yacht-boat-speed-water-163236.jpeg', 'Chandigarh', 1, 'Chandigarh, India', 'chandigarh', '30.7333148', '76.7794179', '2018-05-03 05:03:28', NULL),
+(68, 27, 'test-book2', 'test book2', '<p>going miles with the less fuel</p>', 'white', 0, '450.00', 'New', 0, 11, '1525328497e3.jpg', 'Chandigarh', 1, 'Chandigarh, India', 'Chandigarh, India', '30.7333148', '76.7794179', '2018-05-03 06:21:37', NULL),
+(69, 27, 'yacht24', 'yacht24', '<p>fly with sky</p>', 'blue', 0, '150.00', 'Old', 0, 12, '1525329673hp_riva.jpg', 'Not found', 1, 'Mohali, Punjab, India', 'Mohali, Punjab, India', '30.7046486', '76.71787259999996', '2018-05-03 06:41:13', NULL),
+(70, 27, 'yacht24', 'yacht24', '<p>fly with sky</p>', 'blue', 0, '150.00', 'Old', 0, 12, '1525329722hp_riva.jpg', 'Not found', 1, 'Mohali, Punjab, India', 'Mohali, Punjab, India', '30.7046486', '76.71787259999996', '2018-05-03 06:42:02', NULL),
+(71, 27, 'test-to2', 'TEST TO2', '<p>KING OF GOOD TIMES</p>', 'white', 0, '6500.00', 'New', 0, 11, '1525417351e3.jpg', 'Sahibzada Ajit Singh Nagar', 0, 'Mohali, Punjab, India', 'Mohali, Punjab, India', '30.7046486', '76.71787259999996', '2018-05-04 07:02:32', NULL),
+(72, 25, 'best_ride', 'best ride', '<p>try this</p>', 'red', 0, '30.00', 'New', 0, 13, '1526288045watersp-two.jpg', 'Chandigarh', 1, 'Sector 8, Chandigarh, India', 'Sector 8, Chandigarh, India', '30.7447588', '76.8105577', '2018-05-14 08:54:05', NULL),
+(74, 27, 'fast_jet', 'fast jet up', '<p>test new jet update</p>', 'white', 0, '30.00', 'New', 0, 10, '1526297449jet-ski-one.jpg', 'Chandigarh', 0, 'Sector 8, Chandigarh, India', 'Sector 8, Chandigarh, India', '30.7447588', '76.8105577', '2018-05-14 09:58:26', NULL),
+(76, 27, 'water_lounge', 'water lounge', '<p>jfkojfklhfjhfkhfkhfjifkjh</p>', 'white', 0, '250.00', 'New', 0, 12, '1526452805hp_riva.jpg', 'Not found', 1, 'Chhattisgarh, India', 'Chhattisgarh, India', '30.7447588', '76.8105577', '2018-05-16 06:40:05', NULL),
+(77, 22, 'new_test_boat', 'new test boat', '<p>adfasdf</p>', 'red', 0, '50.00', 'New', 0, 1, '1526468073fsboats-one.jpg', 'Chandigarh', 1, 'IT Park Road, Phase - I, Manimajra, Chandigarh, India', 'IT Park Road, Phase - I, Manimajra, Chandigarh, India', '30.7447588', '76.8105577', '2018-05-16 10:54:33', NULL),
+(78, 23, 'new_ski', 'new ski1', '<p>test this new</p>', 'red', 0, '50.00', 'Old', 0, 10, '1526537235jet-ski-three.jpg', 'Chandigarh', 1, 'New Lake, 42D, Sector 42, Chandigarh', 'New Lake, 42D, Sector 42, Chandigarh', '30.7447588', '76.8105577', '2018-05-17 06:07:16', NULL),
+(79, 23, 'test_new_ski', 'test new ski', '<p>tets adf</p>', 'red', 0, '30.00', 'New', 0, 10, '1526556522jet-ski-three.jpg', 'Chandigarh', 1, 'Sukhna Lake, Sector 1, Chandigarh, India', 'Sukhna Lake, Sector 1, Chandigarh, India', '30.7447588', '76.8105577', '2018-05-17 11:28:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -509,7 +602,19 @@ INSERT INTO `reviews` (`id`, `order_id`, `product_id`, `user_id`, `review`, `rat
 (16, 22, 43, 27, 'awesome', 4, 0, '2018-04-19 06:50:21', '2018-04-19 06:50:21'),
 (8, 23, 40, 27, 'hjkfsdahfdh', 3, 0, '2018-04-18 13:36:27', '2018-04-18 13:36:27'),
 (9, 23, 40, 27, 'hjkfsdahfdh', 3, 0, '2018-04-18 13:36:34', '2018-04-18 13:36:34'),
-(17, 21, 39, 25, 'dsfgsdfgsdfg', 5, 0, '2018-04-23 04:30:47', '2018-04-23 04:30:47');
+(17, 21, 39, 25, 'dsfgsdfgsdfg', 5, 0, '2018-04-23 04:30:47', '2018-04-23 04:30:47'),
+(18, 33, 39, 27, 'GOOD', 3, 0, '2018-05-02 10:03:53', '2018-05-02 10:03:53'),
+(19, 30, 42, 27, 'Hey', 5, 0, '2018-05-02 10:13:54', '2018-05-02 10:13:54'),
+(20, 28, 45, 27, 'good', 4, 0, '2018-05-02 10:18:15', '2018-05-02 10:18:15'),
+(21, 26, 40, 27, 'GYYYY', 2, 0, '2018-05-02 10:25:25', '2018-05-02 10:25:25'),
+(22, 25, 47, 27, 'RTTTTTTT', 4, 0, '2018-05-02 10:26:24', '2018-05-02 10:26:24'),
+(23, 35, 47, 27, 'memorable\r\n', 4, 0, '2018-05-03 05:13:28', '2018-05-03 05:13:28'),
+(24, 24, 43, 27, 'good to ride\r\n', 3, 0, '2018-05-04 04:59:03', '2018-05-04 04:59:03'),
+(25, 34, 44, 27, 'Awesome ride and ambiance', 4, 0, '2018-05-04 05:36:20', '2018-05-04 05:36:20'),
+(26, 37, 39, 27, 'LUXURIOUS RIDE\r\n', 4, 0, '2018-05-04 05:38:59', '2018-05-04 05:38:59'),
+(42, 29, 47, 25, 'adsfasdfsadf', 5, 0, '2018-05-15 07:51:24', '2018-05-15 07:51:24'),
+(43, 32, 46, 25, 'fdgdfgdfgd', 5, 0, '2018-05-15 07:52:16', '2018-05-15 07:52:16'),
+(44, 40, 47, 27, 'ghdgjhfg', 2, 0, '2018-05-15 07:57:03', '2018-05-15 07:57:03');
 
 -- --------------------------------------------------------
 
@@ -539,11 +644,11 @@ INSERT INTO `staticpages` (`id`, `slug`, `position`, `title`, `image`, `content`
 (6, 'frequently-asked-questions', 'faq', 'Frequently Asked Questions', '1512989796faq.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-12-11 09:27:54', '2018-04-10 09:41:03'),
 (12, 'about-us', 'about-us', 'About Us', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-08-17 08:22:56', '2018-04-10 09:10:51'),
 (13, 'trust-and-safety', 'trust-and-safety', 'Trust and Safety', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>', 1, '2017-08-17 08:22:56', '2018-04-10 07:58:30'),
-(14, 'how-we-works', 'how-we-works', 'How We Works', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-08-17 08:22:56', '2018-04-10 09:39:45'),
+(14, 'how-we-works', 'how-we-works', 'How We Works', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-08-17 08:22:56', '2018-05-16 07:43:28'),
 (15, 'protections', 'protection', 'Protections', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-08-17 08:22:56', '2018-04-10 09:39:33'),
 (17, 'owner-tools', 'owner-tools', 'Owner Tools', '1512989667pp.jpg', '<p><strong>Lorem Ipsum</strong> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>\r\n<p>&nbsp;</p>\r\n<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</p>\r\n<p>&nbsp;</p>\r\n<p>&nbsp;</p>', 1, '2017-08-17 08:22:56', '2018-04-10 09:39:24'),
 (18, 'make-money-watercrafts', 'make-money-watercrafts', 'Make money from your water craft', '', '', 1, '2017-08-17 08:22:56', '2018-04-10 09:39:24'),
-(19, 'rent-water-crafts', 'rent-water-crafts', 'Rent a water craft', '', '', 1, '2017-08-17 08:22:56', '2018-04-10 09:39:24');
+(19, 'rent-a-water-craft', 'rent-water-crafts', 'Rent a water craft', '1526453979luxury-yacht-boat-speed-water-163236.jpeg', '<p><strong style=\"margin: 0px; padding: 0px; font-family: \'Open Sans\', Arial, sans-serif; font-size: 14px; text-align: justify;\">Lorem Ipsum</strong><span style=\"font-family: \'Open Sans\', Arial, sans-serif; font-size: 14px; text-align: justify;\">&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>', 1, '2017-08-17 08:22:56', '2018-05-16 06:59:39');
 
 -- --------------------------------------------------------
 
@@ -562,7 +667,7 @@ CREATE TABLE `users` (
   `password` varchar(355) DEFAULT NULL,
   `image` varchar(1000) DEFAULT NULL,
   `dob` varchar(355) DEFAULT NULL,
-  `about` varchar(1000) DEFAULT NULL,
+  `about` text,
   `address` varchar(255) DEFAULT NULL,
   `country` varchar(355) DEFAULT NULL,
   `state` varchar(355) DEFAULT NULL,
@@ -580,15 +685,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role`, `name`, `last_name`, `email`, `username`, `phone`, `password`, `image`, `dob`, `about`, `address`, `country`, `state`, `zip`, `google_id`, `fb_id`, `tokenhash`, `status`, `created`, `modified`) VALUES
-(1, 'admin', 'kuldeep', 'Jha', 'kuldeep@avainfotech.com', 'kuldeep@avainfotech.com', '123-454-5412', '$2y$10$.Jw.hSSFXHlnA4NZ7tZE1uuvzaI32HECEZiL/6Jo5kab0fv46OhPu', '1523007424avatar5.png', '12/20/1995', NULL, 'chandigarh', 'India', 'chandigarh', '123654', NULL, NULL, NULL, 1, '2017-12-29 09:20:33', '2017-12-29 09:20:33'),
-(20, 'user', 'Simerjit', 'Kaur', 'simerjit@avainfotech.com', 'simerjit@avainfotech.com', NULL, '$2y$10$xkaycNJkhziXTaCqBnldRu5bsxLyEkVlPn8OVbtRl4AgnxdJsL6R.', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1888425854819074', NULL, 1, '2018-04-03 09:25:30', '2018-04-03 09:25:30'),
+(1, 'admin', 'kuldeep', 'Jha', 'kuldeep@avainfotech.com', 'kuldeep@avainfotech.com', '123-454-5412', '$2y$10$.AYgSNyzMjbnafFoU7NvrulPij/LgcFAystyosLIGpze4RYOV6yim', '1523007424avatar5.png', '12/20/1995', NULL, 'chandigarh', 'India', 'chandigarh', '123654', NULL, NULL, NULL, 1, '2017-12-29 09:20:33', '2018-05-17 06:34:53'),
 (22, 'user', 'pratek', 'sharma', 'sha@gmail.com', 'sha@gmail.com', NULL, '$2y$10$EdsfEZVewoijS479kaIweuA25ezB6uGyTZMex9Cdbu9SDBR1DQoqW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2018-04-05 06:57:50', '2018-04-05 06:57:50'),
 (23, 'user', 'Diksha', 'Khajuria', 'diksha@avainfotech.com', 'diksha@avainfotech.com', NULL, '$2y$10$Qqj5YQM6dFvAUDtSU53vzeB0gFsZEWpxEV8f7pqpFvsLeyZmFZF9O', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '312151222647137', NULL, 1, '2018-04-05 07:02:36', '2018-04-05 07:02:36'),
-(25, 'user', 'kuldeep', 'kumar', 'kuldeepjha@avainfotech.com', 'kuldeepjha@avainfotech.com', '123-456-781', '$2y$10$1QRgbCKuzpBua/bTVse1.u2pP6B2c/datbptvjpMDIy.DKprriZ1S', '1523007424avatar5.png', '', 'test description dfsgdfsg', '10 itpark chandigarh', '', '', '', NULL, NULL, '76e2e8e9893902d92a1d3075baa2b1f1', 1, '2018-04-05 07:23:25', '2018-04-10 12:11:01'),
-(26, 'user', 'netin', 'sharma', 'netin@avainfotech.com', 'netin@avainfotech.com', NULL, '$2y$10$W88616bKQYI6YAK6Xc/veOx.jK9BWOkYcgGi4/mOdiXbuNQcWxENW', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2018-04-10 05:06:48', '2018-04-10 05:06:48'),
-(27, 'user', 'PRATEEK', 'SHARMA', 'prateek@avainfotech.com', 'prateek@avainfotech.com', '858-585-8585', '$2y$10$WgY3AC0CZ02brg/gBVJDy.36.D4PaNpG/AL9lP6BK1SMkVurJeR3e', '1524200064Lighthouse.jpg', '01/28/1984', 'happy go lucky@bjkfhgfg@hjhjgf****', '8585858', NULL, NULL, NULL, NULL, NULL, '91a0c81aef2c6be73d2b21c2cb0b5a9b', 1, '2018-04-10 06:11:10', '2018-04-20 10:10:03'),
-(28, 'user', 'Ramit', 'Singh', 'ramit@avainfotech.com', 'ramit@avainfotech.com', NULL, '$2y$10$Klqx5SoPrjeQtp3gLeoe.e9.fUO8sep/eyQLOS8EjeuocpMDm6Zsa', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2018-04-11 14:51:07', '2018-04-11 14:51:07'),
-(29, 'user', 'Future Work', 'Technologies', 'futureworktechnologies@gmail.com', 'futureworktechnologies@gmail.com', NULL, '$2y$10$plqdTt.nllBEyG7y5c3MWOF0UVtjmPaRh0Rd5PqC7VNiFJS.SXW.G', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '108240255279762017880', NULL, NULL, 1, '2018-04-11 15:15:03', '2018-04-11 15:15:03');
+(25, 'user', 'kuldeep', 'kumar jha', 'kuldeepjha@avainfotech.com', 'kuldeepjha@avainfotech.com', '123-456-781', '$2y$10$1QRgbCKuzpBua/bTVse1.u2pP6B2c/datbptvjpMDIy.DKprriZ1S', '1523007424avatar5.png', '', 'test description dfsgdfsg', '10 itpark chandigarh', '', '', '', NULL, NULL, '76e2e8e9893902d92a1d3075baa2b1f1', 1, '2018-04-05 07:23:25', '2018-05-16 05:50:11'),
+(27, 'user', 'Prateek', 'Sharma', 'prateek@avainfotech.com', 'prateek@avainfotech.com', '858-585-858', '$2y$10$w7pjNrN.NC.4OHAy1bxzaOVEL1MMRcCLfdTl1BwlV1i5RvO2AeRxC', '1525953554imgpsh_fullsize.png', '01/16/1985', 'happy go lucky', '8585858', NULL, NULL, NULL, NULL, NULL, '2a4dfe69df8f8bd7e7f2355c220dcf0c', 1, '2018-04-10 06:11:10', '2018-05-16 13:21:17'),
+(29, 'user', 'Future Work', 'Technologies', 'futureworktechnologies@gmail.com', 'futureworktechnologies@gmail.com', NULL, '$2y$10$cE6wysj7PudoOJ8GG9LvnuDku8vaNAER.curLDWNH.FLE1RDqP0S2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '108240255279762017880', NULL, NULL, 1, '2018-04-11 15:15:03', '2018-05-17 05:50:46');
 
 --
 -- Indexes for dumped tables
@@ -616,6 +718,12 @@ ALTER TABLE `countries`
 -- Indexes for table `favourites`
 --
 ALTER TABLE `favourites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `galleries`
+--
+ALTER TABLE `galleries`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -657,46 +765,62 @@ ALTER TABLE `users`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
 --
 -- AUTO_INCREMENT for table `contacts`
 --
 ALTER TABLE `contacts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
   MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+
 --
 -- AUTO_INCREMENT for table `favourites`
 --
 ALTER TABLE `favourites`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `galleries`
+--
+ALTER TABLE `galleries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
 --
 -- AUTO_INCREMENT for table `staticpages`
 --
 ALTER TABLE `staticpages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

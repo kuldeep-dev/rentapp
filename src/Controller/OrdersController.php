@@ -237,12 +237,10 @@ public function success($order_id = null){
         if(!$order_id){
             $this->redirect('/');
         }
-        
         $order = $this->Orders->get(base64_decode($order_id), [
-            'contain' => ['Products' => ['Users']]
+            'contain' => ['Users','Products' => ['Users']]
         ])->toArray();
-        
-        
+
         if(isset($_REQUEST['tx'])){ 
             $this->Orders->updateAll(array(
                 'transaction_id' =>  $_REQUEST['tx'],
@@ -252,12 +250,53 @@ public function success($order_id = null){
                 'Orders.id'             =>  $_REQUEST['cm']
             )); 
             
+            $lat = $order['product']['lat'];
+            $lng = trim($order['product']['long']);
+            $data = file_get_contents("https://maps.google.com/maps/api/geocode/json?latlng=$lat,$lng&sensor=false&key=AIzaSyBQrWZPh0mrrL54_UKhBI2_y8cnegeex1o");
+            $output = json_decode($data);
+            $status = $output->status;
+            $address = ($status=="OK")?$output->results[1]->formatted_address:'';
+
+
+
+            $burl = Router::fullbaseUrl();
+            $productimage = $burl."/rentapp/images/products/".$order['product']['image'];
+            $logoimage = 'https://gurpreet.gangtask.com/rentapp/img/emaertillogo.png';
+            $noimage = $burl."images/products/no-image.jpg";
             
-            $email = new Email('default');
-            $email->from(['kuldeepjha@avainfotech.com' => 'Renting App Booking'])
-                ->to($order['product']['user']['email'])
-                ->subject('About')
-                ->send('My message');
+            // $email = new Email('default');
+            // $email->from(['kuldeepjha@avainfotech.com' => 'Renting App Booking'])
+            //     ->to($order['product']['user']['email'])
+            //     ->subject('About')
+            //     ->send('My message');
+
+            $email = new Email('default');        
+                    /**********admin***********/
+            $send = $email->from(['kuldeepjha@avainfotech.com' => 'Renting App'])      
+                    ->emailFormat('html')
+                    ->template('orderconfirmation')
+                    ->to('kuldeepjha@avainfotech.com')   
+                    ->subject('New Booking')      
+                    ->viewVars(array('order' => $order, 'productimage' => $productimage , 'noimage' => $noimage, 'address' => $address))           
+                    ->send();  
+            
+                    /**********seller***********/
+            $send1 = $email->from(['kuldeepjha@avainfotech.com' => 'Renting App'])      
+                    ->emailFormat('html')
+                    ->template('orderconfirmation')
+                    ->to($order['product']['user']['email']) 
+                    ->subject('New Booking')      
+                    ->viewVars(array('order' => $order))           
+                    ->send();   
+
+                    /**********buyer***********/
+            $send2 = $email->from(['kuldeepjha@avainfotech.com' => 'Renting App'])      
+                    ->emailFormat('html')
+                    ->template('orderconfirmation')  
+                    ->to($order['user']['email']) 
+                    ->subject('Order Cancelled')      
+                    ->viewVars(array('order' => $order))              
+                    ->send();    
             
             
             $response = 'success';

@@ -3,10 +3,7 @@
     Users   <?= $this->Html->link(__('Add Users'), ['action' => 'add'], ['class' => 'btn btn-warning']) ?>
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Users</li>
-    </ol>
+    
 </section>
 
 <section class="content">
@@ -24,8 +21,8 @@
                   <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
-                  <th>Username</th>
-                  <th>Role</th>
+                  <!-- <th>Username</th> 
+                  <th>Role</th>-->
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -35,9 +32,9 @@
                 <tr>
                   <td><?php echo $user['id']; ?></td>
                   <td><?php echo $user['name']; ?></td>  
-                  <td><?php echo $user['email']; ?></td>
-                  <td><?php echo $user->username; ?></td>
-                  <td><?php echo ucwords($user['role']); ?></td>
+                  <td><?php echo $user['email']; ?></td><!-- 
+                  <td><?php echo $user->username; ?></td> 
+                  <td><?php echo ucwords($user['role']); ?></td>-->
                   <td><?php echo ($user['status'] == '0') ? 'Disabled' : 'Enabled'; ?></td>
                   <td>
                   <?= $this->Html->link(

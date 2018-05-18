@@ -52,6 +52,9 @@ class ProductsTable extends Table
        $this->hasMany('Galleries', [   
              'foreignKey' => 'product_id'
          ]);
+         $this->hasMany('Orders', [   
+            'foreignKey' => 'product_id'
+        ]);
             
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',

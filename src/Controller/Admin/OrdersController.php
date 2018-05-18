@@ -49,7 +49,7 @@ class OrdersController extends AppController
         public function index()
     {
         $this->paginate = [
-            'contain' => ['OrderItems','Users']
+            'contain' => ['Users','Products'=>['Users']]
         ];
         $orders = $this->paginate($this->Orders);
     
@@ -60,7 +60,7 @@ class OrdersController extends AppController
         public function view($id = null)    
     {
         $order = $this->Orders->get($id, [
-            'contain' => ['OrderItems'=>['Users','Products'],'Users']            
+            'contain' => ['Users','Products'=>['Users']]           
         ]);
  
         $this->set('order', $order); 
@@ -69,7 +69,7 @@ class OrdersController extends AppController
       
     public function payments(){    
         $this->paginate = [ 
-            'contain' => ['OrderItems','Users','Seller']
+            'contain' => ['Users','Seller']
         ];
         $orders = $this->paginate($this->Orders)->toArray();
          

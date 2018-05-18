@@ -3,10 +3,7 @@
     Users
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Edit User</li>
-    </ol>
+    
 </section>
 
 <section class="content">
@@ -21,8 +18,8 @@
             <?= $this->Form->create($user, ['id' => 'user-form', 'enctype' => 'multipart/form-data']) ?>
               <div class="box-body">
               	<div class="form-group">
-             
-                <?php if($loggeduser['role'] == 'admin'){ ?>  
+             <!-- 
+              <?php if($loggeduser['role'] == 'admin'){ ?>  
                 <div class="form-group">
                   <label for="exampleInputEmail1">Role</label>
                   <select name="role" class="form-control">
@@ -33,10 +30,15 @@
                 </div> 
                   
                   
-                <?php } ?>
+                <?php } ?> -->
                 <div class="form-group">
-                  <label for="exampleInputname">Name</label>
+                  <label for="exampleInputname">First Name</label>
                   <?php echo $this->Form->control('name', ['class' => 'form-control', 'label' => false]); ?>
+                </div>
+
+                 <div class="form-group">
+                  <label for="exampleInputname">Last Name</label>
+                  <?php echo $this->Form->control('last_name', ['class' => 'form-control', 'label' => false]); ?>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Email</label>
@@ -47,33 +49,16 @@
                   <?php echo $this->Form->control('phone', ['class' => 'form-control', 'label' => false]); ?>
                 </div>
 
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Gender</label>
-                  <select name="gender" class="form-control">
-                    <option value="male" <?php if($user->gender=='male'){ echo "selected"; }?>>Male</option>
-                    <option value="female" <?php if($user->gender=='female'){ echo "selected"; }?>>Female</option>
-        
-                  </select>
-                </div>  
-                  
+                
                 
                 <div class="form-group">
                   <label for="exampleInputEmail1">Dob</label>
                   <?php echo $this->Form->control('dob', ['id' => 'datepicker', 'class' => 'form-control', 'label' => false]); ?>
                 </div>
                 
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Country</label>
-                  <select name="country" class="form-control">
-                  	<option value="">Select Country</option>
-                    <?php foreach($countries as $country){ ?>
-                    <?php if($country['name'] == $user['country']){ ?>
-                    <option value="<?php echo $country['name']; ?>" selected="selected"><?php echo $country['name']; ?></option>
-                    <?php }else{ ?>
-                    <option value="<?php echo $country['name']; ?>"><?php echo $country['name']; ?></option>
-                    <?php } ?>
-                    <?php } ?>
-                  </select>
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">About</label>
+                  <?php echo $this->Form->control('about', ['class' => 'form-control', 'label' => false]); ?>
                 </div>
                 
                 <div class="form-group">
@@ -101,7 +86,7 @@ $().ready(function() {
 			last_name: "required",
 			phone: {
 				required: true,
-				digits: true
+				// digits: true
 			},
 			country: {
 				required: true

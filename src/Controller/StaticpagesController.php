@@ -237,6 +237,15 @@ class StaticpagesController extends AppController
     }
 
      public function makemoneywatercrafts(){
+
+
+        $this->loadModel('Reviews');
+
+        $reviews = $this->Reviews->find('all',[ 'contain' => ['Users'],'order' => ['Reviews.id' => 'DESC'],'limit' => 10]); 
+        $review = $reviews->all();
+        
+        $this->set(compact('review'));
+        $this->set('_serialize', ['review']);
        
     }
 

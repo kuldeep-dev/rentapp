@@ -3,10 +3,7 @@
    <?= __('Category') ?>
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i> <?= __('Home') ?></a></li>
-        <li class="active"><?= __('Edit Category') ?></li>
-    </ol>
+     
 </section>
 
 <section class="content">
@@ -29,7 +26,7 @@
                   <?php echo $this->Form->control('name', ['class' => 'form-control', 'label' =>'Name']); ?>
                 </div>
                     
-                <div class="form-group">
+               <!--  <div class="form-group">
                   <?php echo $this->Form->control('description', ['class' => 'form-control', 'label' => 'Description']); ?>
                 </div>
 
@@ -39,7 +36,7 @@
                 </div>   
                 <img src="<?php echo $this->request->webroot; ?>images/categories/<?php echo ($category->image != '') ? $category->image : 'no-image.jpg' ?>" class="previewHolder" style="width: 135px;"/>             
               </div>
-
+ -->
 
               <div class="box-footer">
                 <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-success']) ?>

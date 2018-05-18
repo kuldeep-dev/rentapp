@@ -8,7 +8,6 @@
         <li class="active"><?= __('View') ?></li>
     </ol>
 </section>
-
 <section class="content">
 	<div class="row">
         <div class="col-xs-12"> 
@@ -25,25 +24,25 @@
   
         <tr>
             <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($order->name) ?></td>
+            <td><?= h($order->user->name) ?></td>
         </tr>
         
         <tr>
             <th scope="row"><?= __('Email') ?></th>
-            <td><?= h($order->email) ?></td>
+            <td><?= h($order->user->email) ?></td>
         </tr>
 
         <tr>
             <th scope="row"><?= __('Phone') ?></th>
-            <td><?= h($order->phone) ?></td>
+            <td><?= h($order->user->phone) ?></td>
         </tr>
         
         <tr>
             <th scope="row"><?= __('Address') ?></th>
-            <td><?= h($order->address) ?></td>
+            <td><?= h($order->user->address) ?></td>
         </tr>
     
-        <tr>
+        <!-- <tr>
             <th scope="row"><?= __('City') ?></th>
             <td><?= h($order->city) ?></td>
         </tr>
@@ -59,15 +58,20 @@
         <tr>
             <th scope="row"><?= __('Country') ?></th>
             <td><?= h($order->country) ?></td>
-        </tr>
+        </tr> -->
         
         <tr>
-            <th scope="row"><?= __('Subtotal') ?></th>
-            <td>$<?= h($order->subtotal) ?></td>
+            <th scope="row"><?= __('Hourly Price') ?></th>
+            <td>$<?= h($order->hourly_price) ?></td>
         </tr>
+        <tr>
+            <th scope="row"><?= __('Total Hours') ?></th>
+            <td><?= h($order->total_hours) ?></td>
+        </tr>
+
          <tr>
             <th scope="row"><?= __('Total') ?></th>
-            <td>$<?= h($order->total) ?></td>    
+            <td>$<?= h($order->total_price) ?></td>    
         </tr>
          <tr>
             <th scope="row"><?= __('Status') ?></th>
@@ -90,65 +94,68 @@
         </div>
             
             
-      
         <div class="col-xs-12"> 
 
         
-        <div class="box">
-  <div class="box-header">
-    <h3 class="box-title"><?= __('Order Items') ?></h3>
-  </div>
-  <!-- /.box-header -->
-  <div class="box-body no-padding">
-    <?php  
-    if (!empty($order->order_items)): ?>   
-    <table class="table table-condensed">
-        <thead>
-             <tr>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Seller Name') ?></th>
-                <th scope="col"><?= __('Image') ?></th>
-                <th scope="col"><?= __('Price') ?></th>
-                <th scope="col"><?= __('Quantity') ?></th>
-                <th scope="col"><?= __('Subtotal') ?></th>
-            </tr> 
-        </thead>    
-      <tbody>  
-             <?php foreach ($order->order_items as $item): ?>
-            <tr>
-                <td><?= h($item->name) ?></td>
-                <td><?= h($item->user->name) ?></td> 
-                <td>
-                <?php if($item->product->image != ''){ ?>
-                <img src="<?php echo $this->request->webroot; ?>images/products/<?php echo $item->product->image; ?>" style="width: 190px; margin-bottom: 20px;
-                " class="previewHolder"/>
-                <?php }else{ ?>
-                <img src="<?php echo $this->request->webroot; ?>images/products/no-image.jpg" style="width: 190px; margin-bottom: 20px;
-                " class="previewHolder"/>
-                <?php } ?>
-                </td>
-                <td><?= h($item->price) ?></td> 
-                <td><?= h($item->quantity) ?></td> 
-                <td>$<?= h($item->subtotal) ?></td>    
-            </tr>
-            <?php endforeach; ?>  
-      </tbody>
-    </table>
-    <?php endif; ?>   
-  </div>
-  <!-- /.box-body -->
+<div class="box">
+<div class="box-header">
+<h3 class="box-title"><?= __('Order Detail') ?></h3>
+</div>
+<!-- /.box-header -->
+<div class="box-body no-padding">
+
+<div class="trip-list">
+
+
+<ul>
+  <li>
+    <span class="img-crafting">
+      <img src="<?php echo $this->request->webroot."images/products/".$order->product->image; ?>" alt="Boat Image">
+    </span>
+    <h5><?php echo $order->product->name ?></h5>
+    <ul class="details">
+      <li>
+        <label>Date: <?php echo " ". $order->start_date ?><?php echo " " ?><?php echo " To "." ". $order->end_date ?></label> 
+      </li>
+      <li>
+        <label>Time:</label> <?php echo " ". $order->start_time ?><?php echo " " ?><?php  echo " - "." ". $order->end_time ?>
+      </li>
+      <li>
+        <label>Price:</label> $<?php echo " ". $order->total_price?>
+      </li>
+   
+
+    </ul>
+   
+  </li>
+</ul>
+
+
+
 </div>
 
+
+
+</div>
+<!-- /.box-body -->
+</div>
+
+
+
+
+</div>     
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+
+
+
+      
         
-        
-        
-        </div>     
-            
-            
-            
-            
-            
-            
-            
-    </div>
 </section>       

@@ -13,11 +13,12 @@
 
                 <ul>
                 <?php if(!empty($yourorders)){
+                	$count  = 0;
                         foreach($yourorders as $order){
-                          $count  = 0;
+                          
                           if (strtotime($order['start_date']) >= time())
                           {
-                            $count++;
+                            $count = 1;
                         ?>
                   <li>
                     <span class="img-crafting">
@@ -49,20 +50,20 @@
 
                     </ul>
                     <div class="pull-right" style="margin-top: 10px;"> 
-                        <?php if($order['review'] == ""){ ?>
-                        <button type="button" class="btn btn-warning pull-right addreview" id="addreview" data-productid="<?php echo $order['product']['id']; ?>" data-orderid="<?php echo $order['id']; ?>">Write a review</button>
-                        <?php }else{ ?>
-                        <button type="button" class="btn btn-warning pull-right" disabled="disabled">Reviewed</button>
-                        <?php } ?>
+                        <?php //if($order['review'] == ""){ ?>
+                        <!-- <button type="button" class="btn btn-warning pull-right addreview" id="addreview" data-productid="<?php echo $order['product']['id']; ?>" data-orderid="<?php //echo $order['id']; ?>">Write a review</button> -->
+                        <?php //}else{ ?>
+                        <!-- <button type="button" class="btn btn-warning pull-right" disabled="disabled">Reviewed</button> -->
+                        <?php //} ?>
                     </div>
                    
                   </li>
-                  <?php } }  } 
-
-                if($count == 0)
+                  <?php } }  if($count == 0)
                 {
                   echo "No upcoming trips.";
-                }
+                }} 
+
+                
                 ?> 
                   
                 </ul>

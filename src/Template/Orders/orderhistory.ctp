@@ -170,7 +170,7 @@ $(document).delegate('#sbt-rev', 'click', function(){
         if(response == 'success'){
           $('#reviewModal .alert').css('display', 'block');
           $('#reviewModal .review_sec').css('display', 'none');
-          
+          location.reload();
           $(document).click(function(){
             location.reload();
           });

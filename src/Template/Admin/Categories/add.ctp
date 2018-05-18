@@ -3,10 +3,7 @@
    <?= __('Category') ?>
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i><?= __('Home') ?></a></li>
-        <li class="active"><?= __('Add Category') ?></li>
-    </ol>
+   
 </section>
 
 <section class="content">
@@ -30,8 +27,8 @@
                   <label for="exampleInputEmail1">Name</label> 
                   <?php echo $this->Form->control('name', ['class' => 'form-control', 'label' => false]); ?>
                 </div> 
-                  <?php echo $this->Form->control('description',['class' => 'form-control']);?>   
-                  <?php echo $this->Form->control('image',['class' => 'form-control','type'=>'file']);?>
+                  <?php // echo $this->Form->control('description',['class' => 'form-control']);?>   
+                  <?php // echo $this->Form->control('image',['class' => 'form-control','type'=>'file']);?>
               </div>
               <div class="box-footer">
                 <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-success']) ?>

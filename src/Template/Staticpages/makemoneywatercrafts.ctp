@@ -18,7 +18,7 @@
 			<div class="clr"></div>
 		</section><!-- Banner Section End Here -->
 		<section class="how_much-sec">
-			<div class="container-fluid">
+			<div class="container">
 				<div class="row">
 					<div class="col-md-12 no-padding">
 						<div class="head-sec">
@@ -28,8 +28,10 @@
 							<div class="md-10 col-sm-10 col-center">
 								<div class="inner-sec">
 									<label>Market value of your yacht</label>
-									<div id="market"></div>
-									<input type="text" id="market-value" readonly>
+									<div id="sliderOne"></div>
+									<!-- <div id="sliderOne"></div> -->
+									<!-- <input type="text" id="paraOne"  readonly> -->
+									<span id="paraOne">1</span><br>
 								</div>
 							</div>
 						</div>
@@ -37,21 +39,35 @@
 							<div class="md-10 col-sm-10 col-center">
 								<div class="inner-sec">
 									<label>Days per month your yacht is rented</label>
-									<div id="days"></div>
-									<input type="text" id="days-value" readonly>
+									<div id="sliderTwo"></div>
+									<!-- <div id="sliderTwo"></div> -->
+									<!-- <input type="text" id="paraTwo" readonly> -->
+									<span id="paraTwo">1</span><br>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-12">
 							<div class="solution_sec">
 								<label>You Could Earn</label>
-								<h2 class="solution">$13,003</h2>
+								<h2 class="solution" id="paraTotal">$0</h2>
+								<!-- <span id="paraTotal">2</span><br> -->
 								<label>Per Year</label>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
+<!-- Slider 1: <span id="paraOne">1</span><br>
+Slider 2: <span id="paraTwo">1</span><br>
+Total: <span id="paraTotal">2</span><br>
+<br><br>
+<div id="sliderOne"></div>
+<br><br>
+<div id="sliderTwo"></div> -->
+
+
+
 		</section><!-- End Here -->
 		<section class="covered_sec">
 			<div class="container-fluid">
@@ -99,18 +115,21 @@
 						<div class="inner_sec test_inner">
 
 
+							<?php foreach($review as $testinomial){ ?>
 							<div class="wrap_test">
 								<div class="avatar">
-									<img src="<?php echo $this->request->webroot ?>images/testimonial.jpg" alt="Avatar">
+								<?php if($testinomial['user']['image'] != ""){ ?>  
+		<img src="<?php echo $this->request->webroot."images/users/".$testinomial['user']['image']; ?>" alt="profile image">
+		<?php }else{ ?>
+		<img src="<?php echo $this->request->webroot."images/users/noimage.png"; ?>" class="ful_lnght">
+		<?php } ?>
 								</div>
 								<div class="text_sec">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
-									Donec dapibus velit ut vulputate consequat. Nullam ipsum sem, <br />
-									imperdiet rutrum purus sed, varius fermentum lectus. Nam tempor <br />
-									quam urna, semper tristique arcu fermentum id.</p>
-									<span class="name">Eugene P.</span>
+									<p> <?php echo $testinomial['review'] ?></p>
+									<span class="name"><?php echo $testinomial['user']['name'] ?></span>
 								</div>
 							</div>
+						<?php } ?>
 							
 							
 						</div>
@@ -119,3 +138,29 @@
 			</div>
 		</div>
 	</section><!-- Content Section End Here -->
+
+	<script>
+	$("#sliderOne").slider({
+    range: "min",
+    value: 1,
+    min: 1,
+    max: 20000,
+    slide: function(event, ui) {
+        $("#paraOne").text(ui.value);
+        $('#paraTotal').text('$' + ui.value + $('#sliderTwo').slider("value"));
+    }
+
+});
+
+$("#sliderTwo").slider({
+    range: "min",
+    value: 1,
+    min: 1,
+    max: 31,
+    slide: function(event, ui) {
+        $("#paraTwo").text(ui.value);
+        $('#paraTotal').text('$' + ui.value + $('#sliderOne').slider("value"));
+    }
+});
+
+		</script>

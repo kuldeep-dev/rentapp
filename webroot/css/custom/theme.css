@@ -428,10 +428,14 @@ a{
 	position:relative;
 }
 .jet_sec .jet-slider .inner-content .img-sec{
+	height: 282px;
+	width: 399px;
+	overflow: hidden;
 	margin-bottom:10px;
 }
 .jet_sec .jet-slider .inner-content .img-sec img{
-	width:100%;
+	height:100%;
+	width: auto;
 }
 .jet_sec .jet-slider .inner-content .caption h5{
 	text-transform:uppercase;
@@ -1732,7 +1736,7 @@ a{
 	display:block;
 	font-size:23px;
 	font-weight:bold;
-	color:#e5cc95;
+	color: #ecb743;
 	text-align:center;
 	text-transform:uppercase;
 	margin-bottom:35px;
@@ -1747,19 +1751,35 @@ a{
 .how_much-sec .inner-sec .ui-slider{
 	border: none;
 	border-radius: 50px;
-	height: 3px;
+	height: 5px;
 	background-color: rgba(0, 0, 0, 0.16);
 	margin-bottom:35px;
 }
 .how_much-sec .inner-sec .ui-slider .ui-slider-range{
 	background-color:#e5cc95;
 }
-.how_much-sec .inner-sec .ui-slider .ui-slider-handle{
-	height:11px;
-	width:11px;
-	border:none;
-	border-radius:50%;
-	background-color:#e5cc95;
+.how_much-sec .inner-sec .ui-slider .ui-slider-handle {
+	width: 37px;
+    height: 41px;
+    background: url(../../images/yellow_shield.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 0 0;
+    border: none;
+}
+.how_much-sec span#paraOne {
+    font-size: 22px;
+    font-weight: 600;
+}
+.how_much-sec span#paraTwo {
+    font-size: 22px;
+    font-weight: 600;
+}
+.how_much-sec span.ui-slider-handle.ui-state-default.ui-corner-all {
+    top: -1.1em;
+}
+.solution_sec {
+    margin-top: 30px;
 }
 .how_much-sec .inner-sec input{
 	width:100%;
@@ -1943,6 +1963,15 @@ a{
 	line-height:45px;
 	text-align:center;
 	background-color:#231f20;
+}
+.profile_sec .profile_wrap .form-horizontal label.error{
+	position:static;
+	width:100%;
+	height:auto;
+	line-height:normal;
+	background-color:transparent;
+	text-align:left;
+	margin-bottom:10px;
 }
 .profile_sec .profile_wrap .form-horizontal .left-pad{
 	padding-left:0px;
@@ -2420,4 +2449,67 @@ a{
     text-transform: uppercase;
     background-color: #231f20;
     color: #fff;
+	clear: both;
+    overflow: hidden;
+    min-width: 150px;
+}
+/*********shivani style css********/
+.add-pro-box {
+    margin-top: 20px !important;
+}
+.add-pro-box h1 {
+    margin-bottom: 15px;
+}
+
+.box-footer button.btn.btn-success {
+    /* padding: 26px; */
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+.box-footer.gallry-footer button.btn.btn-success {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+.gallry-box-1 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.gallry-box-1 h1 {
+    padding-bottom: 15px;
+}
+.box.gal-box select.form-control.input-sm {
+    width: 80%;
+}
+.box.gal-box .table-bordered {
+    border: 1px solid #ddd;
+    margin-top: 20px;
+}
+.box.gal-box label {
+    width: 100%;
+}
+.box.gal-box input.form-control.input-sm {
+    width: 80%;
+    margin-left: 10px;
+}
+.box.gal-box thead {
+    background-color: #f2f2f2;
+}
+.box.gal-box a.btn.btn-danger.btn-xs {
+    padding: 5px 20px 5px 20px;
+    font-size: 15px;
+    margin-top: 30px;
+}
+/**********************************/
+.icon-img {
+    position: absolute;
+     top: 0px;
+    width: 100%;
+    right: -168px;
+}
+   
+.icon-img img.img-responsive {
+    width: 15px;
+	height: 15px;
 }

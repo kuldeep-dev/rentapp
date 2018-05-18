@@ -51,15 +51,17 @@ class StoresController extends AppController
 
         $this->loadModel('Products');
         $this->loadModel('Categories'); 
-        $products = $this->Products->find('all',['contain'=>['Categories','Reviews'], 'conditions' => ['Products.status' => 1]]);
+        $products = $this->Products->find('all',
+        ['contain'=>['Categories','Reviews'],
+         'conditions' => ['Products.status' => 1]]);
         $features = $products->all(); 
         $features = $features->toArray();
         /*************Categories*************/
         $categories = $this->Categories->find('all', array(
             'recursive' => -1,
             'contain' => array(
-                'Products'
-            ),
+                'Products' => ['Orders','conditions' => ['Products.status' => 1]],               
+            ),            
             //'limit' => 4,
             'conditions' => array(
                 'Categories.status' => 1

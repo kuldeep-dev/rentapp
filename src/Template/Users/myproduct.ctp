@@ -6,6 +6,7 @@
                         <div class="inner-sec">
                             <div class="head-sec">
                                 <h2>List Crafts</h2>
+                                <?= $this->Flash->render() ?>   
                             </div>
                             <div class="trip-list">
                                 <ul>
@@ -51,7 +52,10 @@
                                                 <label>Status:</label> <?php if ($product['status'] == 1) { echo "Active";} else { echo "Deactive";} ?>
                                             </li>
                                             <li>
-                                               <!--  <a href="#">Edit Details</a> -->
+                                                <a href="<?php echo $this->request->webroot."products/edityourcraft/" . $product['id'];?>">Edit Details</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?php echo $this->request->webroot."products/gallery/" . $product['id'];?>">Gallery</a>
                                             </li>
                                         </ul>
                                     </li>

@@ -33,7 +33,8 @@ $cakeDescription = '';
                 'custom/slick.css',
                 'custom/theme.css',
                 'custom/slick-theme.css',
-                'docsupport/chosen.css'
+				'docsupport/chosen.css',
+				'custom/responsive.css'
                 ) ) ?>  
 <?= $this->fetch('meta') ?>
 <?= $this->fetch('css') ?>

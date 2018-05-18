@@ -125,6 +125,7 @@ class ReviewsController extends AppController
 	
 	
     public function addreview(){
+        echo 'hello';
         
         $review = $this->Reviews->newEntity();
     
@@ -144,7 +145,7 @@ class ReviewsController extends AppController
                 /********** Expert Average Rating  **********/
                 
                 $reviews = $this->Reviews->find('all',[
-                    'conditions' => ['Reviews.order_id' => $post['order_id']]
+                    'conditions' => ['Reviews.product_id' => $post['product_id']]
                 ]);
                 
                 $reviews = $reviews->all();
@@ -157,31 +158,35 @@ class ReviewsController extends AppController
                     }
                 }
                 
+                echo count($reviews);
+                echo $review_total;
+
                 $avg_rating = $review_total/ count($reviews);
+                echo $avg_rating;
                 
-                $this->loadModel('Users');
+                $this->loadModel('Products');
                 
-                $this->Users->updateAll(array('avg_rating' => $avg_rating), array('id' => $this->request->data['order_id']));
+                $this->Products->updateAll(array('ava_rating' => $avg_rating), array('id' => $this->request->data['product_id']));
                 
                 /********** Expert Average Rating (END)  **********/
                 
                 /********** Trip Average Rating  **********/
                 
-                $tripreviews = $this->Reviews->find('all',[
-                    'conditions' => ['Reviews.product_id' => $post['product_id']]
-                ]);
+                // $tripreviews = $this->Reviews->find('all',[
+                //     'conditions' => ['Reviews.product_id' => $post['product_id']]
+                // ]);
                 
-                $tripreviews = $tripreviews->all();
+                // $tripreviews = $tripreviews->all();
                 
-                $tripreviews_total = 0;
+                // $tripreviews_total = 0;
                 
-                if(!empty($tripreviews)){
-                    foreach($tripreviews as $tripreview){
-                        $tripreviews_total = $tripreviews_total + $tripreview->rating;
-                    }
-                }
+                // if(!empty($tripreviews)){
+                //     foreach($tripreviews as $tripreview){
+                //         $tripreviews_total = $tripreviews_total + $tripreview->rating;
+                //     }
+                // }
                 
-                $tripavg_rating = $tripreviews_total/ count($tripreviews);
+                // $tripavg_rating = $tripreviews_total/ count($tripreviews);
                 
                 // $this->loadModel('Trips');
                 

@@ -21,18 +21,34 @@ function create_time_range($start, $end, $interval = '60 mins', $format = '12') 
 $times = create_time_range('0:00', '24:00');
 ?>
 <section class="st_content">
+<?php 
+// if(!empty($orders)){
+//     foreach($orders as $booking){
+//         echo '<br>'; 
+//        echo $booking['start_date'];
+//        echo $booking['start_time'];
+//        echo $booking['end_date'];
+//        echo $booking['end_time'];
+//        echo '<br>';
+//     }}
+
+//print_r($slider);
+?>
+ 
         <section class="book-banner">
+        <?php
+        if(count($slider) > 1) {
+        foreach($slider as $slide){  ?>
             <div class="img-wrap">
-                <img src="<?php echo $this->request->webroot; ?>images/booking-banner.jpg" alt="Slider-Image">
+            <?php echo $this->Html->Image("../images/gallery/".$slide->image, array('width' => 1286, 'height' => 612,'alt' =>$slide->name, 'class' => 'image')); ?>
             </div>
-            <div class="img-wrap">
-                <img src="<?php echo $this->request->webroot; ?>images/booking-banner.jpg" alt="Slider-Image">
-            </div>
-            <div class="img-wrap">
-                <img src="<?php echo $this->request->webroot; ?>images/booking-banner.jpg" alt="Slider-Image">
-            </div>
+        <?php } } else{ ?>
+             <div class="img-wrap">
+             <img src="<?php echo $this->request->webroot; ?>images/booking-banner.jpg" alt="Slider-Image">
+         </div>
+       <?php } ?>
         </section><!-- Book Banner End Here --> 
-        <?php //print_r ($watercraft); ?>
+        <?php // print_r ($watercraft); ?>
         <section class="desc-sec">
             <div class="container-fluid">
                 <div class="row">
@@ -42,11 +58,11 @@ $times = create_time_range('0:00', '24:00');
                                 <div class="head-sec">
                                     <h2><?php if(isset($watercraft['name'])){ echo $watercraft['name']; } ?></h2>
                                     <div class="tr-star">
-                                        <span><?php if(isset($watercraft['trips'])){ echo $watercraft['trips']; } ?> Booking</span>
+                                        <span><?php echo count($watercraft['orders']);  ?> Booking</span>
                                         <div class="star">
                                             <?php
                                             $star =  $watercraft['ava_rating'];
-                                            for ($i=1; $i < $star; $i++) {
+                                            for ($i=1; $i <= $star; $i++) {
                                                     echo "<i class='sr-icon'></i>";
                                              } ?>
                                             </div>
@@ -58,29 +74,38 @@ $times = create_time_range('0:00', '24:00');
                                 </div>
                                 <div class="review-sec">
                                     <h5>Reviews</h5>
-                                    <?php if(!empty($watercraft['reviews'])){
-                                     foreach($watercraft['reviews'] as $reviews){ 
+                                    <?php // print_r($reviews); ?>
+                                    <?php if(!empty($reviews)){
+                                     foreach($reviews as $review){ 
                                      ?>
                                     <div class="wrap">
                 <div class="avatar">
-                <?php if($watercraft['user']['image'] != ""){ ?>  
-                <img src="<?php echo $this->request->webroot."images/users/".$watercraft['user']['image']; ?>" alt="profile image">
+                <?php if($review['user']['image'] != ""){ ?>  
+                <img src="<?php echo $this->request->webroot."images/users/".$review['user']['image']; ?>" alt="profile image">
                  <?php }else{ ?>
                 <img src="<?php echo $this->request->webroot."images/users/noimage.png"; ?>" class="ful_lnght">
                  <?php } ?>
 
                                         </div>
-                                        <h5 class="name"><?php echo $reviews['user']['name']; ?></h5>
+                                        <h5 class="name"><?php echo $review['user']['name']; ?></h5>
                                         <div class="star">
                                             <?php
-                                            $star =  $reviews['rating'];
+                                            $star =  $review['rating'];
                                             for ($i=1; $i <= $star; $i++) {
                                                     echo "<i class='sr-icon'></i>";
                                              } ?>
                                         </div>
-                                        <p><?php echo html_entity_decode($reviews['review'], ENT_QUOTES, "UTF-8"); ?></p>
+                                        <p><?php echo html_entity_decode($review['review'], ENT_QUOTES, "UTF-8"); ?></p>
                                     </div>
+                                    
                                     <?php } } ?>
+                                    <ul class="pagination">
+                                <?= $this->Paginator->first('<< ' . __('first')) ?>
+                                <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                                <?= $this->Paginator->numbers() ?>
+                                <?= $this->Paginator->next(__('next') . ' >') ?>
+                                <?= $this->Paginator->last(__('last') . ' >>') ?>
+                                </ul>
                                 </div>
                             </div>
                         </div><!-- Left Section End Here -->

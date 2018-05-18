@@ -5,10 +5,6 @@
     <small></small>
     </h1>
 
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Products</li>
-    </ol>
     
    
 </section>
@@ -47,7 +43,7 @@
             <tr>
                 <td><?= $this->Number->format($product->id) ?></td>  
                 <td><?= h($product->name) ?></td>
-                <td><?= h($product->price) ?></td>  
+                <td>$<?= h($product->price) ?></td>  
                 <!-- <td><?= h($product->quantity) ?></td> -->
                 <td><?= h($product->category->name) ?></td>
                 <td><?= h($product->user->name) ?></td> 
@@ -60,7 +56,7 @@
                         ['action' => 'view', $product->id],
                         ['escape' => false, 'title' => __('View'), 'class' => 'btn btn-info btn-xs']
                     ) ?> 
-                    <?= $this->Html->link(   
+                     <?= $this->Html->link(   
                         __('Gallery'),
                         ['action' => 'gallery', $product->id],
                         ['escape' => false, 'title' => __('Gallery'), 'class' => 'btn btn-warning btn-xs']

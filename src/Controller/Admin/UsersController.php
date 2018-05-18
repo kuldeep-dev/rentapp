@@ -178,21 +178,8 @@ class UsersController extends AppController
 
     {
         $this->loadModel('Products');
-        $user = $this->Users->get($id, [
-
-            'contain' => ['Products'=>'Categories']  
-
-        ]);
-  
-       $bonus = $this->Products->find('all',['contain' => ['Categories'],'conditions'=>['Products.user_id'=>$id,'Products.free_sale'=>1]]) ;
-       $bonus = $bonus->first();     
-
+        $user = $this->Users->get($id); 
         $this->set('user', $user);
-        $this->set('_serialize', ['user']);
-        
-        $this->set('bonus', $bonus);
-        $this->set('_serialize', ['bonus']);     
-
     }
 
 

@@ -90,8 +90,8 @@ class DashboardController extends AppController
 		$this->set('members', $members);
 		$this->set('_serialize', ['members']);
                 
-                $reviews = $this->Reviews->find('all',[
-                'conditions' => ['Reviews.status' => 1],
+		$reviews = $this->Reviews->find('all',[
+		'conditions' => [],
 		])->all()->toArray();
 		
 		$this->set('reviews', $reviews);  

@@ -77,17 +77,17 @@
 	});
 	
 	</script> 
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.1.6/tinymce.min.js"></script>
+      <!--   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.1.6/tinymce.min.js"></script> -->
 <script>
-tinymce.init({
-selector: 'textarea',
-plugins: [
-"code", "charmap", "link"
-],
-toolbar: [
-"undo redo | styleselect | bold italic | link | alignleft aligncenter alignright | charmap code" | "media"
-]
-});
+// tinymce.init({
+// selector: 'textarea',
+// plugins: [
+// "code", "charmap", "link"
+// ],
+// toolbar: [
+// "undo redo | styleselect | bold italic | link | alignleft aligncenter alignright | charmap code" | "media"
+// ]
+// });
 </script>
 </body>
 </html>

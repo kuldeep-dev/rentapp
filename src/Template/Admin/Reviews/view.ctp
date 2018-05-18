@@ -47,7 +47,7 @@
         </tr>
         <tr>
           <th><?= __('Review') ?></th>
-          <td><?= h($review->text) ?></td>
+          <td><?= h($review->review) ?></td>
         </tr>
         </tr>
       </tbody>

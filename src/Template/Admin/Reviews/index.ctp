@@ -39,7 +39,7 @@
                   <td><?php echo $reviews['user']['name']; ?></td>
                   <td><?php echo $reviews['product']['name']; ?></td>
                    <td>
-                  <?php echo $reviews['text']; ?>
+                  <?php echo $reviews['review']; ?>
                   </td>
                   <td><?php echo $reviews['rating']; ?></td>
                  

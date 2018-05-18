@@ -33,7 +33,7 @@
                 <th scope="col"><?= $this->Paginator->sort('Email') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Seller') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Phone') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('Subtotal') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('Hours') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('Total') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -42,15 +42,14 @@
                 <tbody>
                   <?php foreach ($orders as $info): ?>
                     
-                    
             <tr>
                 <td><?= $this->Number->format($info->id) ?></td>
-                <td><?= h($info->name) ?></td>
-                <td><?= h($info->email) ?></td>
                 <td><?= h($info->user->name) ?></td>
-                <td><?= h($info->phone) ?></td>
-                <td><?= h($info->subtotal) ?></td>
-                <td><?= h($info->total) ?></td>
+                <td><?= h($info->user->email) ?></td>
+                <td><?= h($info->product->user->name) ?></td>
+                <td><?= h($info->user->phone) ?></td>
+                <td><?= h($info->total_hours) ?></td>
+                <td>$<?= h($info->total_price) ?></td>
                 <td><?= h($info->created) ?></td> 
                 <td class="actions">
                    <?= $this->Html->link(

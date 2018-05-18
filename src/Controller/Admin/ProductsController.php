@@ -128,15 +128,48 @@ class ProductsController extends AppController
     {
         $product = $this->Products->newEntity();
         if ($this->request->is('post')) {
-            
-                $image = $this->request->data['image'];
- 
-	        $name = time().$image['name'];
+        // echo "<pre>";
+        // print_r($_POST);
+        // die();
+
+        $image = $this->request->data['image'];
+
+        $name = time().$image['name'];
 		$tmp_name = $image['tmp_name'];
 		$upload_path = WWW_ROOT.'images/products/'.$name;
 		move_uploaded_file($tmp_name, $upload_path);
             $this->request->data['image'] = $name;      
             $this->request->data['slug'] =$this->slugify($this->request->data['name']);
+
+
+            $lat = $_POST['lat'];
+            $lng = trim($_POST['long']);
+            $data = file_get_contents("https://maps.google.com/maps/api/geocode/json?latlng=$lat,$lng&sensor=false&key=AIzaSyBQrWZPh0mrrL54_UKhBI2_y8cnegeex1o");
+            $data = json_decode($data);
+            $add_array  = $data->results;
+            $add_array = $add_array[0];
+            $add_array = $add_array->address_components;
+            $country = "Not found";
+            $state = "Not found"; 
+            $city = "Not found";
+            foreach ($add_array as $key) {
+            if($key->types[0] == 'administrative_area_level_2')
+            {
+            $city = $key->long_name;
+            }
+            if($key->types[0] == 'administrative_area_level_1')
+            {
+            $state = $key->long_name;
+            }
+            if($key->types[0] == 'country')
+            {
+            $country = $key->long_name;
+            }
+            }
+            $this->request->data['city'] = $city;
+
+
+
             $product = $this->Products->patchEntity($product, $this->request->getData());
             if ($this->Products->save($product)) {
                 $this->Flash->success(__('The product has been saved.'));
@@ -147,7 +180,7 @@ class ProductsController extends AppController
         }
         $cats = $this->Products->Categories->find('treeList', ['limit' => 200]); 
         //$stores = $this->Products->Stores->find('list', ['limit' => 200]);
-        $users = $this->Products->Users->find('list',array('conditions'=>array('Users.role'=>'user')));
+        $users = $this->Products->Users->find('list',array('conditions'=>array('Users.role'=>'user'))); 
         $this->set(compact('product', 'cats','users'));
         $this->set('_serialize', ['product']);
     }

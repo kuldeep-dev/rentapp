@@ -91,20 +91,22 @@
 							<h2>Testimonial's</h2>
 						</div>
 						<div class="inner_sec test_inner">
-
+						<?php foreach($review as $testinomial){ ?>
 							<div class="wrap_test">
 								<div class="avatar">
-									<img src="<?php echo $this->request->webroot ?>images/testimonial.jpg" alt="Avatar">
+								<?php if($testinomial['user']['image'] != ""){ ?>  
+		<img src="<?php echo $this->request->webroot."images/users/".$testinomial['user']['image']; ?>" alt="profile image">
+		<?php }else{ ?>
+		<img src="<?php echo $this->request->webroot."images/users/noimage.png"; ?>" class="ful_lnght">
+		<?php } ?>
 								</div>
 								<div class="text_sec">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br />
-									Donec dapibus velit ut vulputate consequat. Nullam ipsum sem, <br />
-									imperdiet rutrum purus sed, varius fermentum lectus. Nam tempor <br />
-									quam urna, semper tristique arcu fermentum id.</p>
-									<span class="name">Eugene P.</span>
+									<p> <?php echo $testinomial['review'] ?></p>
+									<span class="name"><?php echo $testinomial['user']['name'] ?></span>
 								</div>
 							</div>
-							
+						<?php } ?>
+
 						</div>
 					</div>
 				</div>

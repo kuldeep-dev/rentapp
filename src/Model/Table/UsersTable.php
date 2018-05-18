@@ -240,10 +240,10 @@ class UsersTable extends Table
     'message' => 'Email address already exists, add a unique value.'
 ]));
         
-        $rules->add($rules->isUnique(['paypal_email'],[
-    'errorField' => 'status',
-    'message' => 'Paypal email address already exists, add a unique value.'
-]));  
+//         $rules->add($rules->isUnique(['paypal_email'],[
+//     'errorField' => 'status',
+//     'message' => 'Paypal email address already exists, add a unique value.'
+// ]));  
         
         $rules->add($rules->isUnique(['phone'],[
     'errorField' => 'status',

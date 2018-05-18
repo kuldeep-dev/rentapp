@@ -191,9 +191,9 @@ class ProductsController extends AppController
        $long = $this->request->data['longitude'];
 
        if($this->request->data['category_type']){
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE cat_id = '$category_id' AND lat != '' HAVING distance < 5 AND products.status = '1'";
     }else{
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5 AND products.status = '1'";
     }
 
     $data = $conn->execute($query);
@@ -225,9 +225,9 @@ class ProductsController extends AppController
        $long = $this->request->getQuery('longitude');
 
        if($this->request->getQuery('latitude')){
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5 AND products.status = '1'";
     }else{
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE  lat != '' HAVING distance < 5 AND products.status = '1'";
     }
 
      $categories = $this->Categories->find('all')->all(); 
@@ -252,9 +252,9 @@ class ProductsController extends AppController
        $long = $this->request->getQuery('longitude');
 
        if($this->request->getQuery('latitude')){
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5 AND products.status = '1'";
     }else{
-      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5";
+      $query="SELECT *, get_distance_in_miles_between_geo_locations('".$lat."','".$long."',`lat`,`long`) as distance FROM products WHERE lat != '' HAVING distance < 5 AND products.status = '1'";
     }
 
     $categories = $this->Categories->find('all')->all(); 
@@ -613,7 +613,7 @@ else
     }
     
     
-    public function gallerydelete(){
+    public function gallerydeleterr(){
         $this->loadModel('Galleries');
         $this->request->allowMethod(['post', 'delete']);
         if($this->request->is('post')){
@@ -698,15 +698,33 @@ else
 
     public function booking($id = null) {
 
+        $this->loadModel('Orders');
+        $this->loadModel('Reviews');
+        $this->loadModel('Galleries');
+
+        $orders = $this->Orders->find('all',array('conditions'=>array('Orders.product_id'=>$id)))->all();       
+
+        $slider = $this->Galleries->find('all',array('conditions'=>array('Galleries.product_id'=>$id)))->all();       
+
+        $this->paginate = [
+            'contain' => ['Users'],
+            'conditions' => ['Reviews.product_id' => $id ],
+            'limit' => 5
+        ];
+        $reviews = $this->paginate($this->Reviews);
+        
        $watercraft = $this->Products->get($id, [
-            'contain' => ['Reviews'=> ['Users'],'Users']
+            'contain' => ['Reviews'=> ['Users'],'Users','Orders']
         ]);
+
+
+
        $this->loadModel('Favourites');
        $check = $this->Favourites->find('all',array('conditions'=>array('Favourites.product_id'=>$id,'Favourites.user_id'=>$this->Auth->user('id'))));
-           $check = $check->first(); 
+        $check = $check->first(); 
           // print_r($check);
 
-        $this->set(compact('watercraft','check'));
+        $this->set(compact('watercraft','check','orders','reviews','slider'));
         $this->set('_serialize', ['watercraft']);
 
     } 
@@ -724,6 +742,13 @@ else
 
     public function rentacraft() {
 
+        $this->loadModel('Reviews');
+
+        $reviews = $this->Reviews->find('all',[ 'contain' => ['Users'],'order' => ['Reviews.id' => 'DESC'],'limit' => 10]); 
+        $review = $reviews->all();
+        
+        $this->set(compact('review'));
+        $this->set('_serialize', ['review']);
     } 
 
 
@@ -786,6 +811,135 @@ else
 
 
     } 
+
+
+    public function edityourcraft($id = null)
+    {
+        $product = $this->Products->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) { 
+            
+            	        $post = $this->request->data;
+
+			if($this->request->data['image']['name'] != ''){ 
+					
+			 	
+			 
+				$image = $this->request->data['image'];
+				$name = time().$image['name'];
+				$tmp_name = $image['tmp_name'];
+				$upload_path = WWW_ROOT.'images/products/'.$name;
+				move_uploaded_file($tmp_name, $upload_path);
+				 
+				$post['image'] = $name;
+			
+			}else{
+				unset($this->request->data['image']);
+				$post = $this->request->data;
+            }
+            $this->request->data['user_id'] = $this->Auth->user('id');
+            $this->request->data['slug'] =$this->slugify($this->request->data['name']);
+
+            $lat = $_POST['lat'];
+            $lng = trim($_POST['long']);
+            $data = file_get_contents("https://maps.google.com/maps/api/geocode/json?latlng=$lat,$lng&sensor=false&key=AIzaSyBQrWZPh0mrrL54_UKhBI2_y8cnegeex1o");
+            $data = json_decode($data);
+            $add_array  = $data->results;
+            $add_array = $add_array[0];
+            $add_array = $add_array->address_components;
+            $country = "Not found";
+            $state = "Not found"; 
+            $city = "Not found";
+            foreach ($add_array as $key) {
+            if($key->types[0] == 'administrative_area_level_2')
+            {
+            $city = $key->long_name;
+            }
+            if($key->types[0] == 'administrative_area_level_1')
+            {
+            $state = $key->long_name;
+            }
+            if($key->types[0] == 'country')
+            {
+            $country = $key->long_name;
+            }
+            }
+
+            $this->request->data['city'] = $city;
+
+            $product = $this->Products->patchEntity($product, $post );  
+            if ($this->Products->save($product)) {
+                $this->Flash->success(__('The product has been updated.'));
+
+                return $this->redirect(['controller' => 'Users' , 'action' => 'myproduct']);
+            }
+            $this->Flash->error(__('The product could not be saved. Please, try again.'));
+        }
+        $cats = $this->Products->Categories->find('treeList', ['limit' => 200]); 
+       // $stores = $this->Products->Stores->find('list', ['limit' => 200]);
+        $users = $this->Products->Users->find('list',array('conditions'=>array('Users.role'=>'user'))); 
+        $this->set(compact('product', 'cats','users'));  
+        $this->set('_serialize', ['product']);
+    }
+
+    ////// gallery
+
+    public function gallery($id = null){  
+        $gallery = $this->Products->get($id, [
+            'contain' => ['Categories', 'Users','Galleries']
+        ]);
+
+    
+        $this->set('gallery', $gallery);
+        $this->set('productid', $id);
+        $this->set('_serialize', ['gallery']);
+    }
+
+    public function addgallery($productid = null ) 
+    {
+        $this->loadModel('Galleries'); 
+        $gallery = $this->Galleries->newEntity();
+        if ($this->request->is('post')) {
+
+                if(isset($this->request->data['image'])){
+               
+                    for($i=0; $i<count($this->request->data['image']);$i++){
+                        $fileName = $this->request->data['image'][$i]['name'];
+                        $fileName = date('His') . $fileName;
+                        $uploadPath = WWW_ROOT.'images/gallery/'.$fileName; 
+                        $actual_file[] = $fileName;
+                        move_uploaded_file($this->request->data['image'][$i]['tmp_name'], $uploadPath);
+                        $post['product_id'] = $productid;
+                        $post['image']    = $fileName;
+                        $gallery = $this->Galleries->newEntity();                    
+                        $gallery = $this->Galleries->patchEntity($gallery,$post);            
+                        $this->Galleries->save($gallery);
+                    } 
+                     $this->Flash->success(__('The gallery has been saved.'));  
+                    return $this->redirect(['action' => 'gallery/'.$productid]);
+                }   
+   
+         
+        }
+    }
+
+    public function gallerydelete($id = null,$productid = null)
+       
+    {  
+           $this->loadModel('Galleries');
+        //$this->request->allowMethod(['post', 'delete']);
+        $product = $this->Galleries->get($id);
+        if ($this->Galleries->delete($product)) {
+            $this->Flash->success(__('The gallery has been deleted.'));
+        } else {
+            $this->Flash->error(__('The gallery could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['controller'=>'products','action' => 'gallery',$productid]);
+
+    }
+
      
     
 } 

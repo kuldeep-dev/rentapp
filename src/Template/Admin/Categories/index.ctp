@@ -3,10 +3,7 @@
     <?= __('Categories') ?>   <?= $this->Html->link(__('Add Category'), ['action' => 'add'], ['class' => 'btn btn-warning']) ?>
     <small></small>
     </h1>
-    <ol class="breadcrumb">
-        <li><a href="dashboard"><i class="fa fa-dashboard"></i><?= __('Home') ?> </a></li>
-        <li class="active"><?= __('Categories') ?></li>
-    </ol>
+    
 </section>
 
 <section class="content">
@@ -25,8 +22,8 @@
              <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('image') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name') ?></th><!-- 
+                <th scope="col"><?= $this->Paginator->sort('image') ?></th> -->
                 <th scope="col"><?= $this->Paginator->sort('created') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -36,14 +33,14 @@
             <tr>
                 <td><?= $this->Number->format($category->id) ?></td>
                 <td><?= h($category->name) ?></td>
-                <td><?php echo $this->Html->Image('/images/categories/' . $category->image, array('width' => 100, 'height' => 100, 'alt' =>$category->name, 'class' => 'image')); ?></td>
+              <!--   <td><?php echo $this->Html->Image('/images/categories/' . $category->image, array('width' => 100, 'height' => 100, 'alt' =>$category->name, 'class' => 'image')); ?></td> -->
                 <td><?= h($category->created) ?></td>
                 <td class="actions">
-                   <?= $this->Html->link(
+                   <!-- <?= $this->Html->link(
                         '<span class="fa fa-eye"></span><span class="sr-only">' . __('View') . '</span>',
                         ['action' => 'view', $category->id],
                         ['escape' => false, 'title' => __('View'), 'class' => 'btn btn-info btn-xs']
-                    ) ?>  
+                    ) ?>  --> 
                     <?= $this->Html->link(
                         '<span class="fa fa-pencil"></span><span class="sr-only">' . __('Edit') . '</span>',
                         ['action' => 'edit', $category->id],

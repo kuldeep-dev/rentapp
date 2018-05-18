@@ -68,6 +68,7 @@ $times = create_time_range('0:00', '24:00');
 			<div class="clr"></div>
 		</section>
 		<!-- Banner-Section End Here -->
+
  		<?php if(!empty($categories)){
                          foreach($categories as $cat){ 
 
@@ -100,7 +101,7 @@ $times = create_time_range('0:00', '24:00');
 									<div class="caption">
 										<h5><?php if(isset($item['name'])){ echo $item['name']; } ?></h5>
 										<div class="tr-star">
-											<span><?php if(isset($item['trips'])){ echo $item['trips']; } ?> Booking</span>
+											<span><?php  echo count($item['orders']); ?> Booking</span>
 											<div class="star">
 											<?php
 										    $star =  $item['ava_rating'];

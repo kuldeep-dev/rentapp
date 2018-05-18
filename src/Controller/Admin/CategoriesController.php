@@ -94,22 +94,22 @@ class CategoriesController extends AppController
         $category = $this->Categories->newEntity(); 
         if ($this->request->is('post')) {
             
-                $image = $this->request->data['image'];
+  //               $image = $this->request->data['image'];
  
-	        $name = time().$image['name']; 
-		$tmp_name = $image['tmp_name'];
-		$upload_path = WWW_ROOT.'images/categories/'.$name; 
-		move_uploaded_file($tmp_name, $upload_path);
-            $this->request->data['image'] = $name;      
+	 //        $name = time().$image['name']; 
+		// $tmp_name = $image['tmp_name'];
+		// $upload_path = WWW_ROOT.'images/categories/'.$name; 
+		// move_uploaded_file($tmp_name, $upload_path);
+  //           $this->request->data['image'] = $name;      
             $this->request->data['slug'] =$this->slugify($this->request->data['name']);
             
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {
-                $this->Flash->success(__('The category has been saved.'));
+                $this->Flash->success(__('Category has been created.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The category could not be saved. Please, try again.'));
+            $this->Flash->error(__('The category could not be created. Please, try again.'));
         }
         $parentCategories = $this->Categories->ParentCategories->find('treeList', ['limit' => 200]);  
         $this->set(compact('category', 'parentCategories'));
@@ -132,22 +132,22 @@ class CategoriesController extends AppController
             
                    $post = $this->request->data; 
 
-			if($this->request->data['image']['name'] != ''){ 
+			// if($this->request->data['image']['name'] != ''){ 
 					
 			 	
 			 
-				$image = $this->request->data['image'];
-				$name = time().$image['name'];
-				$tmp_name = $image['tmp_name'];
-				$upload_path = WWW_ROOT.'images/categories/'.$name;
-				move_uploaded_file($tmp_name, $upload_path);
+			// 	$image = $this->request->data['image'];
+			// 	$name = time().$image['name'];
+			// 	$tmp_name = $image['tmp_name'];
+			// 	$upload_path = WWW_ROOT.'images/categories/'.$name;
+			// 	move_uploaded_file($tmp_name, $upload_path);
 				 
-				$post['image'] = $name;
+			// 	$post['image'] = $name;
 			
-			}else{
-				unset($this->request->data['image']);
+			// }else{
+			// 	unset($this->request->data['image']);
 				$post = $this->request->data;
-			}
+			// }
             
              
             $category = $this->Categories->patchEntity($category, $post);
